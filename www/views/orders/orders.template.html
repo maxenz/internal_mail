@@ -1,0 +1,34 @@
+<ion-view view-title="Listado de órdenes">
+  <ion-content ng-controller="OrdersCtrl as ordersCtrl">
+
+
+
+    <div class="row">
+        <button class="col button button-small button-stable margin-right-2-percent" ng-click="ordersCtrl.openDatePicker(true)">
+          <span ng-if="ordersCtrl.data.filters.from">
+            {{ ordersCtrl.data.filters.from | amDateFormat: 'DD/MM/YYYY'}}
+          </span>
+          <span ng-hide="ordersCtrl.data.filters.from">
+            Fecha desde
+          </span>
+          <i class="icon ion-arrow-down-b"></i>
+        </button>
+        <button class="col button button-small button-stable margin-right-2-percent" ng-click="ordersCtrl.openDatePicker(false)">
+          <span ng-if="ordersCtrl.data.filters.to">
+            {{ ordersCtrl.data.filters.to | amDateFormat: 'DD/MM/YYYY' }}
+          </span>
+          <span ng-hide="ordersCtrl.data.filters.to">
+            Fecha desde
+          </span>
+          <i class="icon ion-arrow-down-b"></i>
+        </button>
+      <!-- <div class="col col-40">
+      <input type="text" placeholder="Fecha hasta" ng-click="ordersCtrl.openDatePicker()" ng-model="ordersCtrl.data.filters.to" />
+    </div> -->
+      <button class="col button button-small button-balanced" ng-click="ordersCtrl.filterOrders()">
+        Filtrar
+      </button>
+  </div>
+
+</ion-content>
+</ion-view>

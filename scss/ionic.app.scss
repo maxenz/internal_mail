@@ -86,11 +86,11 @@ div.list.list-no-padding {
   padding: 2px !important;
 }
 
-div.popup-buttons {
-  & > button {
-    background-color: $balanced !important;
-  }
-}
+// div.popup-buttons {
+//   & > button {
+//     background-color: $balanced !important;
+//   }
+// }
 
 .hr-observations {
   margin-top: 0;
@@ -105,4 +105,8 @@ div.popup-buttons {
 
 .padding-bottom-0 {
   padding-bottom: 0 !important;
+}
+
+.margin-right-2-percent {
+  margin-right: 2%;
 }

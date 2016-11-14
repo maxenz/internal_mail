@@ -5,14 +5,15 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('shaman', [
+angular.module('internalMail', [
   'ionic',
-  'shaman.controllers',
-  'shaman.services',
-  'shaman.directives',
+  'internalMail.controllers',
+  'internalMail.services',
+  'internalMail.directives',
   'ngCordova',
   'angularMoment',
-  'chart.js'
+  'chart.js',
+  'ionic-datepicker'
 ])
 
 .run(function($ionicPlatform, loginService) {
@@ -34,9 +35,24 @@ angular.module('shaman', [
 
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, ionicDatePickerProvider) {
 
   $ionicConfigProvider.tabs.position('bottom');
+
+  var datePickerObj = {
+      inputDate: new Date(),
+      setLabel: 'Aceptar',
+      todayLabel: 'Hoy',
+      closeLabel: 'Cerrar',
+      mondayFirst: false,
+      weeksList: ["D", "L", "M", "M", "J", "V", "S"],
+      monthsList: ["Ene", "Feb", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Ago", "Sept", "Oct", "Nov", "Dic"],
+      templateType: 'popup',
+      showTodayButton: true,
+      dateFormat: 'dd MMMM yyyy',
+      closeOnSelect: false
+    };
+    ionicDatePickerProvider.configDatePicker(datePickerObj);
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -48,53 +64,28 @@ angular.module('shaman', [
   .state('tab', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'views/tabs.html'
+    templateUrl: 'views/tabs.html',
+    controller: 'TabsCtrl'
   })
 
   // Each tab has its own nav history stack:
 
-  .state('tab.monitors', {
-    url: '/monitors',
+  .state('tab.orders', {
+    url: '/orders',
     views: {
-      'monitors': {
-        templateUrl: 'views/monitors/monitors.template.html',
-        controller: 'MonitorsCtrl'
+      'orders': {
+        templateUrl: 'views/orders/orders.template.html',
+        controller: 'OrdersCtrl'
       }
     }
   })
 
-  .state('tab.monitors-details', {
-    url: '/monitors/:monitorId',
+  .state('tab.order', {
+    url: '/order',
     views: {
-      'monitors': {
-        templateUrl: 'views/monitors/detail/monitor-detail.template.html',
-        controller: 'MonitorDetailCtrl',
-        controllerAs : 'monitorDetailCtrl',
-        resolve: {
-          _mobileTypes : function(monitorService) {
-            return monitorService.getMobileTypes();
-          }
-        }
-      }
-    }
-  })
-
-  .state('tab.alerts', {
-    url: '/alerts',
-    views: {
-      'alerts': {
-        templateUrl: 'views/alerts/alerts.template.html',
-        controller: 'AlertsCtrl'
-      }
-    }
-  })
-
-  .state('tab.operative', {
-    url: '/operative',
-    views: {
-      'operative': {
-        templateUrl: 'views/operative/operative.template.html',
-        controller: 'OperativeCtrl'
+      'order': {
+        templateUrl: 'views/order/order.template.html',
+        controller: 'OrderCtrl'
       }
     }
   })
@@ -116,7 +107,23 @@ angular.module('shaman', [
     controllerAs: 'loginCtrl'
   });
 
+  // .state('tab.monitors-details', {
+  //   url: '/monitors/:monitorId',
+  //   views: {
+  //     'monitors': {
+  //       templateUrl: 'views/monitors/detail/monitor-detail.template.html',
+  //       controller: 'MonitorDetailCtrl',
+  //       controllerAs : 'monitorDetailCtrl',
+  //       resolve: {
+  //         _mobileTypes : function(monitorService) {
+  //           return monitorService.getMobileTypes();
+  //         }
+  //       }
+  //     }
+  //   }
+  // })
+
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/monitors');
+  $urlRouterProvider.otherwise('/tab/orders');
 
 });

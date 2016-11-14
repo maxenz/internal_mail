@@ -1,7 +1,7 @@
 (function(){
 
   angular
-  .module('shaman.services')
+  .module('internalMail.services')
   .factory('utilsService', utilsService);
 
   utilsService.$inject = [

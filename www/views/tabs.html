@@ -1,22 +1,17 @@
-<ion-tabs class="tabs-icon-top tabs-color-active-balanced">
+<ion-tabs class="tabs-icon-top" ng-controller="TabsCtrl as tabsCtrl">
 
-  <!-- Monitors Tab -->
-  <ion-tab title="Monitores" icon-off="ion-ios-monitor-outline" icon-on="ion-ios-monitor" href="#/tab/monitors">
-    <ion-nav-view name="monitors"></ion-nav-view>
+  <!-- Order Create/Edit Tab -->
+  <ion-tab title="Crear orden" icon-off="ion-ios-compose-outline" icon-on="ion-ios-compose" href="#/tab/order" hidden="{{!tabsCtrl.settingsService.getUrl()}}">
+    <ion-nav-view name="order"></ion-nav-view>
   </ion-tab>
 
-  <!-- Operative Tab -->
-  <ion-tab title="Operativa" icon-off="ion-ios-flame-outline" icon-on="ion-ios-flame" href="#/tab/operative">
-    <ion-nav-view name="operative"></ion-nav-view>
-  </ion-tab>
-
-  <!-- Notifications Tab -->
-  <ion-tab title="Alertas" icon-off="ion-ios-bell-outline" icon-on="ion-ios-bell" href="#/tab/alerts">
-    <ion-nav-view name="alerts"></ion-nav-view>
+  <!-- Orders Reception List Tab -->
+  <ion-tab title="Listado de órdenes" icon-off="ion-ios-list-outline" icon-on="ion-ios-list" href="#/tab/orders" hidden="{{!tabsCtrl.settingsService.getUrl()}}">
+    <ion-nav-view name="orders"></ion-nav-view>
   </ion-tab>
 
   <!-- Settings Tab -->
-  <ion-tab title="Opciones" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/settings">
+  <ion-tab title="Ajustes" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/settings">
     <ion-nav-view name="settings"></ion-nav-view>
   </ion-tab>
 

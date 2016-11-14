@@ -2,7 +2,7 @@
 
   'use strict';
 
-  angular.module('shaman.controllers')
+  angular.module('internalMail.controllers')
 
   .controller('LoginCtrl', LoginCtrl);
 
@@ -10,14 +10,16 @@
     'loginService',
     '$state',
     '$ionicPopup',
-    'utilsService'
+    'utilsService',
+    'ERRORS'
   ]
 
   function LoginCtrl(
     loginService,
     $state,
     $ionicPopup,
-    utilsService
+    utilsService,
+    ERRORS
   ) {
 
     var vm = this;
@@ -28,36 +30,39 @@
 
       if (validate()) {
 
-      loginService.login(vm.data).success(function(response) {
+        // --> [START_SOAP_MISSING]
+        window.localStorage.setItem("r4c1ng", 2 + "&r4c1ng");
+        loginService.data.isAuthenticated = true;
+        //loginService.data.isAuthenticated = true;
+        //loginService.data.authData = result;
+        $state.go('tab.settings');
+        return;
+        // --> [END_SOAP_MISSING]
 
-        var json                = utilsService.xmlToJsonResponse(response);
-        var result              = json.loginMobileGerencialResponse.loginMobileGerencialResult.diffgram.defaultDataSet.sQL;
+        loginService.login(vm.data).success(function(response) {
 
-        if (result) {
+          var json                = utilsService.xmlToJsonResponse(response);
+          var result              = json.loginMobileGerencialResponse.loginMobileGerencialResult.diffgram.defaultDataSet.sQL;
 
-          window.localStorage.setItem("r4c1ng", result.id + "&r4c1ng");
-          loginService.data.isAuthenticated = true;
-          loginService.data.authData = result;
-          $state.go('tab.monitors');
+          if (result) {
 
-        } else {
+            window.localStorage.setItem("r4c1ng", result.id + "&r4c1ng");
+            loginService.data.isAuthenticated = true;
+            loginService.data.authData = result;
+            $state.go('tab.monitors');
 
-          var alertPopup = $ionicPopup.alert({
-            title: 'Datos incorrectos!',
-            template: 'Por favor, ingrese los datos correctamente.'
-          });
+          } else {
 
-          vm.data.password = '';
-        }
+            utilsService.showAlert('Error!',ERRORS.incorrectData);
+            vm.data.password = '';
 
-      }).error(function(data) {
+          }
 
-        var alertPopup = $ionicPopup.alert({
-          title: 'Error de conexión!',
-          template: 'Vuelva a intentar luego.'
+        }).error(function(data) {
+
+          utilsService.showAlert('Error!',ERRORS.incorrectData);
+
         });
-
-      });
 
       }
 
@@ -65,10 +70,7 @@
 
     function validate() {
       if (!vm.data.userName || !vm.data.password) {
-        var alertPopup = $ionicPopup.alert({
-          title: 'Error!',
-          template: 'Debe ingresar usuario y apellido.'
-        });
+        utilsService.showAlert('Error!', ERRORS.mustEnterUserAndPassword);
         return false;
       }
 

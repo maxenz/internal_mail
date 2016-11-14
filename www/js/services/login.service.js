@@ -1,7 +1,7 @@
 (function(){
 
   angular
-  .module('shaman.services')
+  .module('internalMail.services')
   .factory('loginService', loginService);
 
   loginService.$inject = [
@@ -19,7 +19,8 @@
     var service = {
       login               : login,
       data                : {},
-      loadUserCredentials : loadUserCredentials
+      loadUserCredentials : loadUserCredentials,
+      isAuthenticated     : isAuthenticated
     };
 
     return service;
@@ -39,6 +40,10 @@
       if (token) {
         service.data.isAuthenticated = true;
       }
+    }
+
+    function isAuthenticated() {
+      return service.data.isAuthenticated;
     }
 
 

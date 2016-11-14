@@ -1,5 +1,29 @@
-<ion-view view-title="Opciones">
-  <ion-content class="border-top-green" ng-controller="SettingsCtrl as settingsCtrl">
+<ion-view view-title="Ajustes">
+  <ion-content ng-controller="SettingsCtrl as settingsCtrl">
+
+    <div class="list">
+      <div class="item item-divider">
+        Generación de URL
+      </div>
+      <div class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <input type="text" ng-model="settingsCtrl.data.license" placeholder="Ingrese nro. de licencia">
+        </label>
+        <button class="button button-small" ng-click="settingsCtrl.generateUrl()">
+          Generar URL
+        </button>
+      </div>
+      <a class="item" href="">
+        URL
+        <span class="item-note" ng-if="settingsCtrl.settingsService.getUrl()">
+          {{ settingsCtrl.settingsService.getUrl() }}
+        </span>
+
+        <span class="item-note color-assertive bold" ng-hide="settingsCtrl.settingsService.getUrl()">
+          {{ settingsCtrl.data.messages.noUrl }}
+        </span>
+      </a>
+    </div>
 
   </ion-content>
 </ion-view>

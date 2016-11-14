@@ -9860,9 +9860,6 @@ div.list.list-no-padding {
 .padding-2 {
   padding: 2px !important; }
 
-div.popup-buttons > button {
-  background-color: #8bc541 !important; }
-
 .hr-observations {
   margin-top: 0;
   margin-bottom: 0;
@@ -9874,3 +9871,6 @@ div.popup-buttons > button {
 
 .padding-bottom-0 {
   padding-bottom: 0 !important; }
+
+.margin-right-2-percent {
+  margin-right: 2%; }
