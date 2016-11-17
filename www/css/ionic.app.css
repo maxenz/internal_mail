@@ -9874,3 +9874,34 @@ div.list.list-no-padding {
 
 .margin-right-2-percent {
   margin-right: 2%; }
+
+span.mobile {
+  display: block;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  background-color: #8bc541;
+  color: white;
+  text-align: center;
+  font-size: 1em; }
+
+.font-size-12 {
+  font-size: 12px; }
+
+.margin-top-3 {
+  margin-top: 3px; }
+
+.padding-0 {
+  padding: 0; }
+
+/** Styling for the username field **/
+label.item.has-error {
+  border-bottom: 2px solid red; }
+
+.button-order-date {
+  padding-top: 2px;
+  padding-bottom: 2px; }
+  .button-order-date > i {
+    padding-top: 0 !important; }

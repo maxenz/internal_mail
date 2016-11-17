@@ -13,7 +13,8 @@ angular.module('internalMail', [
   'ngCordova',
   'angularMoment',
   'chart.js',
-  'ionic-datepicker'
+  'ionic-datepicker',
+  'ngMessages'
 ])
 
 .run(function($ionicPlatform, loginService) {

@@ -1,34 +1,51 @@
 <ion-view view-title="Listado de órdenes">
   <ion-content ng-controller="OrdersCtrl as ordersCtrl">
 
+    <div class="list">
 
+      <div class="item padding-2">
+        <div class="row">
+          <button class="col button button-small button-stable margin-right-2-percent" ng-click="ordersCtrl.openDatePicker(true)">
+            <span ng-if="ordersCtrl.data.filters.from">
+              {{ ordersCtrl.data.filters.from | amDateFormat: 'DD/MM/YYYY'}}
+            </span>
+            <span ng-hide="ordersCtrl.data.filters.from">
+              Fecha desde
+            </span>
+            <i class="icon ion-arrow-down-b"></i>
+          </button>
+          <button class="col button button-small button-stable margin-right-2-percent" ng-click="ordersCtrl.openDatePicker(false)">
+            <span ng-if="ordersCtrl.data.filters.to">
+              {{ ordersCtrl.data.filters.to | amDateFormat: 'DD/MM/YYYY' }}
+            </span>
+            <span ng-hide="ordersCtrl.data.filters.to">
+              Fecha hasta
+            </span>
+            <i class="icon ion-arrow-down-b"></i>
+          </button>
+          <button class="col button button-small button-balanced" ng-click="ordersCtrl.filterOrders()">
+            Filtrar
+          </button>
+        </div>
+      </div>
 
-    <div class="row">
-        <button class="col button button-small button-stable margin-right-2-percent" ng-click="ordersCtrl.openDatePicker(true)">
-          <span ng-if="ordersCtrl.data.filters.from">
-            {{ ordersCtrl.data.filters.from | amDateFormat: 'DD/MM/YYYY'}}
-          </span>
-          <span ng-hide="ordersCtrl.data.filters.from">
-            Fecha desde
-          </span>
-          <i class="icon ion-arrow-down-b"></i>
-        </button>
-        <button class="col button button-small button-stable margin-right-2-percent" ng-click="ordersCtrl.openDatePicker(false)">
-          <span ng-if="ordersCtrl.data.filters.to">
-            {{ ordersCtrl.data.filters.to | amDateFormat: 'DD/MM/YYYY' }}
-          </span>
-          <span ng-hide="ordersCtrl.data.filters.to">
-            Fecha desde
-          </span>
-          <i class="icon ion-arrow-down-b"></i>
-        </button>
-      <!-- <div class="col col-40">
-      <input type="text" placeholder="Fecha hasta" ng-click="ordersCtrl.openDatePicker()" ng-model="ordersCtrl.data.filters.to" />
-    </div> -->
-      <button class="col button button-small button-balanced" ng-click="ordersCtrl.filterOrders()">
-        Filtrar
-      </button>
-  </div>
+      <div class="item padding-2" ng-repeat="order in ordersCtrl.ordersService.orders">
+        <div class="row">
+          <div class="col col-20">
+            <span class="mobile margin-top-3">M{{ order.movilId }}</span>
+          </div>
+          <div class="col col-80 font-size-12">
+            <div class="row">
+              <span class="bold">{{ order.cantidad }}</span> <span class="padding-left-5">reports, del {{ order.fecDesde | amDateFormat: 'DD/MM/YYYY' }} al {{ order.fecHasta | amDateFormat: 'DD/MM/YYYY' }} </span>
+            </div>
+            <div class="row">
+              Fecha de generación: <span class="bold padding-left-5">{{ order.fecRecepcion | amDateFormat: 'DD/MM/YYYY' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-</ion-content>
+    </div>
+
+  </ion-content>
 </ion-view>

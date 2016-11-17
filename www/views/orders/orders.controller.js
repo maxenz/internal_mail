@@ -8,18 +8,22 @@
 
   OrdersCtrl.$inject = [
     'loginService',
+    'utilsService',
+    'ordersService',
     '$state',
     'ionicDatePicker',
-    'utilsService',
-    'ERRORS'
+    'ERRORS',
+    '$ionicLoading'
   ];
 
   function OrdersCtrl(
     loginService,
+    utilsService,
+    ordersService,
     $state,
     ionicDatePicker,
-    utilsService,
-    ERRORS
+    ERRORS,
+    $ionicLoading
   ) {
 
     // --> Declarations
@@ -30,6 +34,7 @@
     vm.data.filters   = {};
     vm.filterOrders   = filterOrders;
     vm.openDatePicker = openDatePicker;
+    vm.ordersService  = ordersService;
 
     activate();
 
@@ -46,6 +51,9 @@
     }
 
     function initializeDatepickerFrom() {
+
+      vm.data.filters.from = moment();
+
       datepickerFrom = {
         callback: function (val) {
           var dateFrom = moment(val);
@@ -63,6 +71,9 @@
     }
 
     function initializeDatepickerTo() {
+
+      vm.data.filters.to = moment();
+
       datepickerTo = {
         callback: function (val) {
 
@@ -81,6 +92,15 @@
     }
 
     function filterOrders() {
+      $ionicLoading.show({
+        template: 'Cargando órdenes...'
+      });
+      ordersService
+      .getOrders(vm.data.filters)
+      .then(function(response){
+        ordersService.setOrders(response);
+        $ionicLoading.hide();
+      });
 
     }
 

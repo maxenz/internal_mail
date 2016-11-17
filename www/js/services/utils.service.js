@@ -27,7 +27,8 @@
       xmlToJsonResponse       : xmlToJsonResponse,
       capitalizeFirstLetter   : capitalizeFirstLetter,
       uniqueArray             : uniqueArray,
-      minutesToTime           : minutesToTime
+      minutesToTime           : minutesToTime,
+      setResponseAsArray      : setResponseAsArray
     };
 
     return service;
@@ -133,6 +134,14 @@
       var fmtMinutes = justMinutes < 10 ? '0' + justMinutes : justMinutes;
       var fmtHours   = justHour < 10 ? '0' + justHour : justHour;
       return fmtHours + ':' + fmtMinutes;
+    }
+
+    function setResponseAsArray(response) {
+      if (Array.isArray(response)){
+        return response;
+      } else {
+        return [response];
+      }
     }
 
   }

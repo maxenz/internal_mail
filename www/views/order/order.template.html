@@ -1,6 +1,67 @@
 <ion-view view-title="Creación de orden">
   <ion-content ng-controller="OrderCtrl as orderCtrl">
+    <form name="orderForm" novalidate>
+      <div class="list">
 
+        <label class="item item-input item-stacked-label" ng-class="{ 'has-error': orderForm.mobile.$touched && orderForm.mobile.$invalid}">
+          <span class="input-label bold">Móvil </span>
+          <input type="text" name="mobile" ng-model="orderCtrl.data.mobile" required />
+          <div class="help-block" ng-messages="orderForm.mobile.$error" ng-show="orderForm.mobile.$touched">
+            <div ng-messages-include="views/order/messages-validation.html"></div>
+          </div>
+        </label>
+
+        <label class="item item-input item-stacked-label">
+          <span class="input-label bold">Fecha de recepción </span>
+          <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(0)">
+            <span>
+              {{ orderCtrl.data.date | amDateFormat: 'DD/MM/YYYY'}}
+            </span>
+            <i class="icon ion-arrow-down-b"></i>
+          </button>
+        </label>
+
+        <label class="item item-input item-stacked-label">
+          <span class="input-label bold">Fecha desde </span>
+          <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(1)">
+            <span>
+              {{ orderCtrl.data.dateFrom | amDateFormat: 'DD/MM/YYYY'}}
+            </span>
+            <i class="icon ion-arrow-down-b"></i>
+          </button>
+        </label>
+
+        <label class="item item-input item-stacked-label">
+          <span class="input-label bold">Fecha hasta </span>
+          <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(2)"> 
+            <span>
+              {{ orderCtrl.data.dateTo | amDateFormat: 'DD/MM/YYYY'}}
+            </span>
+            <i class="icon ion-arrow-down-b"></i>
+          </button>
+        </label>
+
+        <label class="item item-input item-stacked-label" ng-class="{ 'has-error': orderForm.reportsQuantity.$touched && orderForm.reportsQuantity.$invalid}">
+          <div class="row padding-0">
+            <div class="col col-67 padding-0">
+              <span class="input-label bold">Cantidad </span>
+              <input type="number" name="reportsQuantity" ng-model="orderCtrl.data.reportsQuantity" required />
+              <div class="help-block" ng-messages="orderForm.reportsQuantity.$error" ng-show="orderForm.reportsQuantity.$touched">
+                <div ng-messages-include="views/order/messages-validation.html"></div>
+              </div>
+            </div>
+            <div class="col col-33">
+              <button class="button button-balanced" ng-click="getReportsQuantity()">Calcular</button>
+            </div>
+          </div>
+        </label>
+
+        <div class="padding">
+          <button class="button button-block button-balanced" ng-disabled="orderForm.$invalid" ng-click="orderCtrl.submit()">Enviar</button>
+        </div>
+
+      </div>
+    </form>
 
   </ion-content>
 </ion-view>
