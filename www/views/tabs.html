@@ -1,12 +1,12 @@
 <ion-tabs class="tabs-icon-top" ng-controller="TabsCtrl as tabsCtrl">
 
   <!-- Order Create/Edit Tab -->
-  <ion-tab title="Crear orden" icon-off="ion-ios-compose-outline" icon-on="ion-ios-compose" href="#/tab/order" hidden="{{!tabsCtrl.settingsService.getUrl()}}">
+  <ion-tab title="Crear/Editar orden" icon-off="ion-ios-compose-outline" icon-on="ion-ios-compose" href="#/tab/order">
     <ion-nav-view name="order"></ion-nav-view>
   </ion-tab>
 
   <!-- Orders Reception List Tab -->
-  <ion-tab title="Listado de órdenes" icon-off="ion-ios-list-outline" icon-on="ion-ios-list" href="#/tab/orders" hidden="{{!tabsCtrl.settingsService.getUrl()}}">
+  <ion-tab title="Listado de órdenes" icon-off="ion-ios-list-outline" icon-on="ion-ios-list" href="#/tab/orders">
     <ion-nav-view name="orders"></ion-nav-view>
   </ion-tab>
 

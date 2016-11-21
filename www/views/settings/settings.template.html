@@ -1,5 +1,5 @@
 <ion-view view-title="Ajustes">
-  <ion-content ng-controller="SettingsCtrl as settingsCtrl">
+  <ion-content>
 
     <div class="list">
       <div class="item item-divider">
@@ -23,6 +23,15 @@
           {{ settingsCtrl.data.messages.noUrl }}
         </span>
       </a>
+      <div class="item item-divider">
+        Usuario
+      </div>
+      <div class="item item-button-right">
+        {{ settingsCtrl.data.user}}
+        <button class="button button-assertive" ng-click="settingsCtrl.logout()">
+          <i class="icon ion-log-out"></i>
+        </button>
+      </div>
     </div>
 
   </ion-content>

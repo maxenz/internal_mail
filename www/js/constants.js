@@ -12,7 +12,7 @@
     genericUrlProcess               : 'Hubo un error en la generación de la url. Vuelva a intentarlo luego.',
     incorrectData                   : 'Los datos son incorrectos. Por favor, ingréselos nuevamente.',
     genericConnectionError          : 'Hubo un error en la conexión. Vuelva a intentarlo luego.',
-    noUrl                           : 'La url de la aplicación no fue generada',
+    noUrl                           : 'La url no fue generada.',
     mustEnterUserAndPassword        : 'Debe ingresar usuario y password.',
     dateFromMustBeSmallerThanDateTo : 'La fecha desde debe ser menor o igual a la fecha hasta.',
     mustCompleteDateFrom            : 'Debe completar la fecha desde',

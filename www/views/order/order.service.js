@@ -8,24 +8,33 @@
     'URLS',
     'utilsService',
     '$http',
-    '$ionicPopup'
+    '$ionicPopup',
+    'ordersService'
   ];
 
   function orderService(
     URLS,
     utilsService,
     $http,
-    $ionicPopup
+    $ionicPopup,
+    ordersService
   ) {
 
     var service = {
-      createOrder : createOrder,
-      parseOrderResult : parseOrderResult
+      createOrder                : createOrder,
+      parseOrderResult           : parseOrderResult,
+      getReportsQuantity         : getReportsQuantity,
+      parseReportsQuantityResult : parseReportsQuantityResult
     };
 
     return service;
 
-    function createOrder(data) {
+    function createOrder() {
+
+      var data = ordersService.selectedOrder;
+
+      // Si es 0, es creacion. Si tiene id, es edicion.
+      if (!data.id) data.id = 0;
 
       var url = URLS.orders
       + 'soap_method=SetRecepcion'
@@ -82,6 +91,24 @@
 
       service.orders = orders;
 
+    }
+
+    function getReportsQuantity(data) {
+      var url = URLS.orders
+      + 'soap_method=GetCantidad'
+      + '&pMov=' + data.mobile
+      + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
+      + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
+
+      return $http.get(url).then(function(response) {
+        return response.data;
+      });
+    }
+
+    function parseReportsQuantityResult(data) {
+      var json   = utilsService.xmlToJsonResponse(data);
+      var result = json.getCantidadResponse.getCantidadResult.diffgram.defaultDataSet.sQL;
+      return parseInt(result.cantidad);
     }
 
 

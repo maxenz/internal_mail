@@ -41,19 +41,20 @@ angular.module('internalMail', [
   $ionicConfigProvider.tabs.position('bottom');
 
   var datePickerObj = {
-      inputDate: new Date(),
-      setLabel: 'Aceptar',
-      todayLabel: 'Hoy',
-      closeLabel: 'Cerrar',
-      mondayFirst: false,
-      weeksList: ["D", "L", "M", "M", "J", "V", "S"],
-      monthsList: ["Ene", "Feb", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Ago", "Sept", "Oct", "Nov", "Dic"],
-      templateType: 'popup',
-      showTodayButton: true,
-      dateFormat: 'dd MMMM yyyy',
-      closeOnSelect: false
-    };
-    ionicDatePickerProvider.configDatePicker(datePickerObj);
+    inputDate: new Date(),
+    setLabel: 'Ok',
+    todayLabel: 'Hoy',
+    closeLabel: 'Cerrar',
+    mondayFirst: false,
+    weeksList: ["D", "L", "M", "M", "J", "V", "S"],
+    monthsList: ["Ene", "Feb", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Ago", "Sept", "Oct", "Nov", "Dic"],
+    templateType: 'popup',
+    showTodayButton: true,
+    dateFormat: 'dd MMMM yyyy',
+    closeOnSelect: false
+  };
+  ionicDatePickerProvider.configDatePicker(datePickerObj);
+
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -76,7 +77,7 @@ angular.module('internalMail', [
     views: {
       'orders': {
         templateUrl: 'views/orders/orders.template.html',
-        controller: 'OrdersCtrl'
+        controller: 'OrdersCtrl as ordersCtrl'
       }
     }
   })
@@ -86,7 +87,7 @@ angular.module('internalMail', [
     views: {
       'order': {
         templateUrl: 'views/order/order.template.html',
-        controller: 'OrderCtrl'
+        controller: 'OrderCtrl as orderCtrl'
       }
     }
   })
@@ -96,7 +97,7 @@ angular.module('internalMail', [
     views: {
       'settings': {
         templateUrl: 'views/settings/settings.template.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsCtrl as settingsCtrl'
       }
     }
   })
@@ -104,8 +105,7 @@ angular.module('internalMail', [
   .state('login', {
     url: '/login',
     templateUrl: 'views/login/login.template.html',
-    controller: 'LoginCtrl',
-    controllerAs: 'loginCtrl'
+    controller: 'LoginCtrl as loginCtrl'
   });
 
   // .state('tab.monitors-details', {

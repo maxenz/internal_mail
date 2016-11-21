@@ -1,5 +1,5 @@
 <ion-view view-title="Listado de órdenes">
-  <ion-content ng-controller="OrdersCtrl as ordersCtrl">
+  <ion-content>
 
     <div class="list">
 
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div class="item padding-2" ng-repeat="order in ordersCtrl.ordersService.orders">
+      <a href="" class="item padding-2" ng-repeat="order in ordersCtrl.ordersService.orders" ng-click="ordersCtrl.editOrder(order)">
         <div class="row">
           <div class="col col-20">
             <span class="mobile margin-top-3">M{{ order.movilId }}</span>
@@ -43,7 +43,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </a>
 
     </div>
 

@@ -35,6 +35,7 @@
     vm.filterOrders   = filterOrders;
     vm.openDatePicker = openDatePicker;
     vm.ordersService  = ordersService;
+    vm.editOrder      = editOrder;
 
     activate();
 
@@ -47,7 +48,12 @@
 
       initializeDatepickerFrom();
       initializeDatepickerTo();
+      filterOrders();
 
+    }
+
+    function editOrder(order) {
+      ordersService.editOrder(order);
     }
 
     function initializeDatepickerFrom() {
@@ -99,6 +105,7 @@
       .getOrders(vm.data.filters)
       .then(function(response){
         ordersService.setOrders(response);
+      }).finally(function(){
         $ionicLoading.hide();
       });
 

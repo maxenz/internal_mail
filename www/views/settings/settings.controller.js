@@ -27,9 +27,11 @@
     // --> Declarations
     var vm                 = this;
     vm.data                = {};
+    vm.data.user           = window.localStorage.getItem('user');
     vm.data.messages       = ERRORS;
     vm.generateUrl         = generateUrl;
     vm.settingsService     = settingsService;
+    vm.logout              = logout;
 
     activate();
 
@@ -60,6 +62,10 @@
         utilsService.showAlert('Error!', ERRORS.genericUrlProcess);
       });
 
+    }
+
+    function logout() {
+      loginService.logout();
     }
 
 

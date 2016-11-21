@@ -7,20 +7,24 @@
   loginService.$inject = [
     'URLS',
     'utilsService',
-    '$http'
+    '$http',
+    '$state'
   ];
 
   function loginService(
     URLS,
     utilsService,
-    $http
+    $http,
+    $state
   ) {
 
     var service = {
       login               : login,
+      parseLoginResponse  : parseLoginResponse,
       data                : {},
       loadUserCredentials : loadUserCredentials,
-      isAuthenticated     : isAuthenticated
+      isAuthenticated     : isAuthenticated,
+      logout              : logout
     };
 
     return service;
@@ -32,7 +36,16 @@
       + '&pIde=' + userData.userName
       + '&pPsw=' + userData.password;
 
-      return $http.get(url);
+      return $http.post(url).then(function(response) {
+        return response.data;
+      });
+    }
+
+    function parseLoginResponse(data) {
+
+      var json      = utilsService.xmlToJsonResponse(data);
+      var loginData = json.loginMobileGerencialResponse.loginMobileGerencialResult.diffgram.defaultDataSet.sQL;
+      return loginData;
     }
 
     function loadUserCredentials() {
@@ -46,6 +59,11 @@
       return service.data.isAuthenticated;
     }
 
+    function logout() {
+      service.data.isAuthenticated = false;
+      window.localStorage.clear();
+      $state.go('login');
+    }
 
   }
 

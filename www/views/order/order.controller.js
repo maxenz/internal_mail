@@ -10,6 +10,7 @@
     'loginService',
     'orderService',
     'utilsService',
+    'ordersService',
     '$state',
     '$ionicLoading',
     'ionicDatePicker',
@@ -20,18 +21,23 @@
     loginService,
     orderService,
     utilsService,
+    ordersService,
     $state,
     $ionicLoading,
     ionicDatePicker,
     ERRORS
   ) {
-    
+
     // --> Declarations
     var datepickerDate, datepickerFrom, datepickerTo;
-    var vm            = this;
-    vm.submit         = submit;
-    vm.openDatePicker = openDatePicker;
-    vm.data           = {};
+    var vm                   = this;
+    vm.data                  = {};
+    vm.submit                = submit;
+    vm.openDatePicker        = openDatePicker;
+    vm.cantCalculateQuantity = cantCalculateQuantity;
+    vm.getReportsQuantity    = getReportsQuantity;
+    vm.ordersService         = ordersService;
+    vm.generateNewOrder      = generateNewOrder;
     activate();
 
     // --> Functions
@@ -40,9 +46,11 @@
         $state.go('login');
       }
 
+      ordersService.generateNewOrder();
       initializeDatepickerDate();
       initializeDatepickerTo();
       initializeDatepickerFrom();
+
     }
 
     function submit() {
@@ -51,12 +59,19 @@
         template: 'Creando orden...'
       });
       orderService
-      .createOrder(vm.data)
+      .createOrder()
       .then(function(response){
         var result = orderService.parseOrderResult(response);
         $ionicLoading.hide();
         if (parseInt(result.resultado) === 1) {
-          utilsService.showAlert('Operación exitosa!', 'La orden se creó correctamente.');
+          var orderId = ordersService.selectedOrder.id;
+          var mobile = ordersService.selectedOrder.mobile;
+          if (orderId) {
+            utilsService.showAlert('Operación exitosa!', 'La orden del móvil ' + mobile + ' se editó correctamente.');
+          } else {
+            utilsService.showAlert('Operación exitosa!', 'La orden se creó correctamente.');
+          }
+
         } else {
           utilsService.showAlert('Error!', result.mensajeError);
         }
@@ -80,19 +95,42 @@
 
     }
 
+    function cantCalculateQuantity() {
+      return !vm.ordersService.selectedOrder.dateFrom || !vm.ordersService.selectedOrder.dateTo || !vm.ordersService.selectedOrder.mobile;
+    }
+
+    function getReportsQuantity() {
+      $ionicLoading.show({
+        template: 'Consultando cantidad de reportes...'
+      });
+      orderService
+      .getReportsQuantity(vm.ordersService.selectedOrder)
+      .then(function(response){
+        vm.ordersService.selectedOrder.reportsQuantity = orderService.parseReportsQuantityResult(response);
+        $ionicLoading.hide();
+      });
+
+    }
+
+    function generateNewOrder() {
+      vm.ordersService.generateNewOrder();
+      activate();
+      vm.orderForm.$setUntouched();
+    }
+
     function initializeDatepickerDate() {
 
-      vm.data.date = moment();
+      vm.ordersService.selectedOrder.date = moment();
 
       datepickerDate = {
         callback: function (val) {
 
           var date = moment(val);
-          var dateFrom = moment(vm.data.dateFrom);
-          var dateTo = moment(vm.data.dateTo);
+          var dateFrom = moment(vm.ordersService.selectedOrder.dateFrom);
+          var dateTo = moment(vm.ordersService.selectedOrder.dateTo);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.data.date = date;
+            vm.ordersService.selectedOrder.date = date;
           }
 
         }
@@ -101,17 +139,17 @@
 
     function initializeDatepickerFrom() {
 
-      vm.data.dateFrom = moment().add(-4, 'days');
+      vm.ordersService.selectedOrder.dateFrom = moment().add(-4, 'days');
 
       datepickerFrom = {
         callback: function (val) {
 
           var dateFrom = moment(val);
-          var date = moment(vm.data.date);
-          var dateTo = moment(vm.data.dateTo);
+          var date = moment(vm.ordersService.selectedOrder.ate);
+          var dateTo = moment(vm.ordersService.selectedOrder.dateTo);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.data.dateFrom = dateFrom;
+            vm.ordersService.selectedOrder.dateFrom = dateFrom;
           }
 
         }
@@ -120,31 +158,31 @@
 
     function initializeDatepickerTo() {
 
-      vm.data.dateTo   = moment().add(-1, 'days');
+      vm.ordersService.selectedOrder.dateTo   = moment().add(-1, 'days');
 
       datepickerTo = {
         callback: function (val) {
 
           var dateTo = moment(val);
-          var date = moment(vm.data.date);
-          var dateFrom = moment(vm.data.dateFrom);
+          var date = moment(vm.ordersService.selectedOrder.date);
+          var dateFrom = moment(vm.ordersService.selectedOrder.dateFrom);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.data.dateTo = dateTo;
+            vm.ordersService.selectedOrder.dateTo = dateTo;
           }
 
         }
       };
     }
 
-    function validateDates(date, _from, to) {
+    function validateDates(receptionDate, _from, to) {
 
-      if (_from > to) {
+      if (_from.dayOfYear() > to.dayOfYear()) {
         utilsService.showAlert('Error!', ERRORS.dateFromMustBeSmallerThanDateTo);
         return false;
       }
 
-      if (_from > date || to > date) {
+      if (_from.dayOfYear() > receptionDate.dayOfYear() || to.dayOfYear() > receptionDate.dayOfYear()) {
         utilsService.showAlert('Error!', ERRORS.receptionDateMustBeGreatherThan);
         return false;
       }

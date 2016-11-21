@@ -11,7 +11,8 @@
     '$state',
     '$ionicPopup',
     'utilsService',
-    'ERRORS'
+    'ERRORS',
+    '$ionicLoading'
   ]
 
   function LoginCtrl(
@@ -19,7 +20,8 @@
     $state,
     $ionicPopup,
     utilsService,
-    ERRORS
+    ERRORS,
+    $ionicLoading
   ) {
 
     var vm = this;
@@ -30,26 +32,21 @@
 
       if (validate()) {
 
-        // --> [START_SOAP_MISSING]
-        window.localStorage.setItem("r4c1ng", 2 + "&r4c1ng");
-        loginService.data.isAuthenticated = true;
-        //loginService.data.isAuthenticated = true;
-        //loginService.data.authData = result;
-        $state.go('tab.settings');
-        return;
-        // --> [END_SOAP_MISSING]
-
-        loginService.login(vm.data).success(function(response) {
-
-          var json                = utilsService.xmlToJsonResponse(response);
-          var result              = json.loginMobileGerencialResponse.loginMobileGerencialResult.diffgram.defaultDataSet.sQL;
+        $ionicLoading.show({
+          template: 'Iniciando sesión...'
+        });
+        loginService.login(vm.data)
+        .then(function(response) {
+          
+          var result = loginService.parseLoginResponse(response);
 
           if (result) {
 
             window.localStorage.setItem("r4c1ng", result.id + "&r4c1ng");
+            window.localStorage.setItem("user", result.identificacion);
             loginService.data.isAuthenticated = true;
             loginService.data.authData = result;
-            $state.go('tab.monitors');
+            $state.go('tab.orders');
 
           } else {
 
@@ -58,10 +55,13 @@
 
           }
 
-        }).error(function(data) {
+
+        }).catch(function(data) {
 
           utilsService.showAlert('Error!',ERRORS.incorrectData);
 
+        }).finally(function(){
+          $ionicLoading.hide();
         });
 
       }

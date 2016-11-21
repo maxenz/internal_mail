@@ -8,20 +8,25 @@
     'URLS',
     'utilsService',
     '$http',
-    '$ionicPopup'
+    '$ionicPopup',
+    '$ionicTabsDelegate'
   ];
 
   function ordersService(
     URLS,
     utilsService,
     $http,
-    $ionicPopup
+    $ionicPopup,
+    $ionicTabsDelegate
   ) {
 
+
     var service = {
-      getOrders : getOrders,
-      setOrders : setOrders,
-      orders    : []
+      getOrders        : getOrders,
+      setOrders        : setOrders,
+      editOrder        : editOrder,
+      generateNewOrder : generateNewOrder,
+      orders           : []
     };
 
     return service;
@@ -41,9 +46,12 @@
 
     function setOrders(data) {
 
-      var json                = utilsService.xmlToJsonResponse(data);
-      var orders              = json.getRecepcionResponse.getRecepcionResult.diffgram.defaultDataSet.sQL;
-      formatOrders(orders);
+      var json   = utilsService.xmlToJsonResponse(data);
+      var orders = json.getRecepcionResponse.getRecepcionResult.diffgram.defaultDataSet.sQL;
+      if (orders) {
+        formatOrders(orders);
+      }
+
     }
 
     function formatOrders(orders) {
@@ -60,6 +68,30 @@
 
     }
 
+    function editOrder(order) {
+
+      $ionicTabsDelegate.select(0);
+      service.selectedOrder = convertOrderToViewModel(order);
+
+    }
+
+    function convertOrderToViewModel(order) {
+
+      var vm             = {};
+      vm.mobile          = order.movilId;
+      vm.date            = order.fecRecepcion;
+      vm.dateFrom        = order.fecDesde;
+      vm.dateTo          = order.fecHasta;
+      vm.reportsQuantity = parseInt(order.cantidad);
+      vm.id              = order.id;
+      vm.title = vm.id ? "Edición de orden " + vm.id : "Nueva orden";
+      return vm;
+
+    }
+
+    function generateNewOrder() {
+      service.selectedOrder = convertOrderToViewModel({});
+    }
 
   }
 
