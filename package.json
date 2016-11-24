@@ -1,7 +1,7 @@
 {
-  "name": "shamangerencia",
-  "version": "1.1.1",
-  "description": "shamanGerencia: An Ionic project",
+  "name": "internalMail",
+  "version": "1.0",
+  "description": "Internal Mail : una app de Agrupación de Colaboración Grupo Paramedic",
   "dependencies": {
     "elementtree": "^0.1.6",
     "gulp": "^3.5.6",

@@ -1,6 +1,6 @@
 {
   "name": "internalMail",
-  "app_id": "b01b8d1f",
+  "app_id": "",
   "gulpStartupTasks": [
     "sass",
     "watch"

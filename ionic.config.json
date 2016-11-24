@@ -1,6 +1,6 @@
 {
-  "name": "shamanGerencia",
-  "app_id": "b01b8d1f",
+  "name": "internalMail",
+  "app_id": "5376b171",
   "gulpStartupTasks": [
     "sass",
     "watch"
