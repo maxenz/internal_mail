@@ -12,8 +12,7 @@
     'ordersService',
     '$state',
     'ionicDatePicker',
-    'ERRORS',
-    '$ionicLoading'
+    'ERRORS'
   ];
 
   function OrdersCtrl(
@@ -22,16 +21,14 @@
     ordersService,
     $state,
     ionicDatePicker,
-    ERRORS,
-    $ionicLoading
+    ERRORS
   ) {
 
     // --> Declarations
 
     var datepickerFrom, datepickerTo;
     var vm            = this;
-    vm.data           = {};
-    vm.data.filters   = {};
+    vm.data           = ordersService.data;
     vm.filterOrders   = filterOrders;
     vm.openDatePicker = openDatePicker;
     vm.ordersService  = ordersService;
@@ -58,8 +55,6 @@
 
     function initializeDatepickerFrom() {
 
-      vm.data.filters.from = moment();
-
       datepickerFrom = {
         callback: function (val) {
           var dateFrom = moment(val);
@@ -77,8 +72,6 @@
     }
 
     function initializeDatepickerTo() {
-
-      vm.data.filters.to = moment();
 
       datepickerTo = {
         callback: function (val) {
@@ -98,17 +91,7 @@
     }
 
     function filterOrders() {
-      $ionicLoading.show({
-        template: 'Cargando órdenes...'
-      });
-      ordersService
-      .getOrders(vm.data.filters)
-      .then(function(response){
-        ordersService.setOrders(response);
-      }).finally(function(){
-        $ionicLoading.hide();
-      });
-
+      ordersService.filterOrders();
     }
 
     function openDatePicker(from){

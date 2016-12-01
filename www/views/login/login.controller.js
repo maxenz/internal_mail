@@ -37,13 +37,13 @@
         });
         loginService.login(vm.data)
         .then(function(response) {
-          
+
           var result = loginService.parseLoginResponse(response);
 
           if (result) {
-
             window.localStorage.setItem("r4c1ng", result.id + "&r4c1ng");
             window.localStorage.setItem("user", result.identificacion);
+            window.localStorage.setItem("userId", parseInt(result.id));
             loginService.data.isAuthenticated = true;
             loginService.data.authData = result;
             $state.go('tab.orders');

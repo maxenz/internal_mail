@@ -50,6 +50,7 @@ angular.module('internalMail', [
     monthsList: ["Ene", "Feb", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Ago", "Sept", "Oct", "Nov", "Dic"],
     templateType: 'popup',
     showTodayButton: true,
+    to : new Date(),
     dateFormat: 'dd MMMM yyyy',
     closeOnSelect: false
   };

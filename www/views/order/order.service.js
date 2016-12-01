@@ -38,14 +38,13 @@
 
       var url = URLS.orders
       + 'soap_method=SetRecepcion'
+      + '&pId='  + data.id
       + '&pMov=' + data.mobile
       + '&pFec=' + moment(data.date).format('YYYYMMDD')
       + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
       + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
       + '&pCnt=' + data.reportsQuantity
-      + '&pUsr=' + 3
-
-      // --> [TODO]Cuando haga bien lo de login, cambiar pUsr
+      + '&pUsr=' + window.localStorage.getItem("userId")
 
       return $http.post(url).then(function(response) {
         return response.data;

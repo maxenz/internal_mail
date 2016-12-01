@@ -14,7 +14,9 @@
     '$state',
     '$ionicLoading',
     'ionicDatePicker',
-    'ERRORS'
+    '$ionicTabsDelegate',
+    'ERRORS',
+    '$scope'
   ];
 
   function OrderCtrl(
@@ -25,7 +27,9 @@
     $state,
     $ionicLoading,
     ionicDatePicker,
-    ERRORS
+    $ionicTabsDelegate,
+    ERRORS,
+    $scope
   ) {
 
     // --> Declarations
@@ -37,8 +41,17 @@
     vm.cantCalculateQuantity = cantCalculateQuantity;
     vm.getReportsQuantity    = getReportsQuantity;
     vm.ordersService         = ordersService;
+    vm.selectedOrder         = ordersService.selectedOrder;
     vm.generateNewOrder      = generateNewOrder;
     activate();
+
+    $scope.$watch(function() { return vm.ordersService.selectedOrder },
+                  function(newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                      vm.selectedOrder = vm.ordersService.selectedOrder;
+                    }
+                  }
+                 );
 
     // --> Functions
     function activate() {
@@ -46,10 +59,9 @@
         $state.go('login');
       }
 
+      initializeDatepickers();
       ordersService.generateNewOrder();
-      initializeDatepickerDate();
-      initializeDatepickerTo();
-      initializeDatepickerFrom();
+
 
     }
 
@@ -64,13 +76,17 @@
         var result = orderService.parseOrderResult(response);
         $ionicLoading.hide();
         if (parseInt(result.resultado) === 1) {
-          var orderId = ordersService.selectedOrder.id;
-          var mobile = ordersService.selectedOrder.mobile;
+          var orderId = vm.selectedOrder.id;
+          var mobile = vm.selectedOrder.mobile;
           if (orderId) {
             utilsService.showAlert('Operación exitosa!', 'La orden del móvil ' + mobile + ' se editó correctamente.');
           } else {
             utilsService.showAlert('Operación exitosa!', 'La orden se creó correctamente.');
           }
+
+          generateNewOrder();
+          ordersService.filterOrders();
+          $ionicTabsDelegate.select(1);
 
         } else {
           utilsService.showAlert('Error!', result.mensajeError);
@@ -96,17 +112,18 @@
     }
 
     function cantCalculateQuantity() {
-      return !vm.ordersService.selectedOrder.dateFrom || !vm.ordersService.selectedOrder.dateTo || !vm.ordersService.selectedOrder.mobile;
+      return !vm.selectedOrder.dateFrom || !vm.selectedOrder.dateTo || !vm.selectedOrder.mobile;
     }
 
     function getReportsQuantity() {
+
       $ionicLoading.show({
         template: 'Consultando cantidad de reportes...'
       });
       orderService
-      .getReportsQuantity(vm.ordersService.selectedOrder)
+      .getReportsQuantity(vm.selectedOrder)
       .then(function(response){
-        vm.ordersService.selectedOrder.reportsQuantity = orderService.parseReportsQuantityResult(response);
+        vm.selectedOrder.reportsQuantity = orderService.parseReportsQuantityResult(response);
         $ionicLoading.hide();
       });
 
@@ -114,23 +131,27 @@
 
     function generateNewOrder() {
       vm.ordersService.generateNewOrder();
-      activate();
+      initializeDatepickers();
       vm.orderForm.$setUntouched();
     }
 
-    function initializeDatepickerDate() {
+    function initializeDatepickers() {
+      initializeDatepickerDate();
+      initializeDatepickerFrom();
+      initializeDatepickerTo();
+    }
 
-      vm.ordersService.selectedOrder.date = moment();
+    function initializeDatepickerDate() {
 
       datepickerDate = {
         callback: function (val) {
 
           var date = moment(val);
-          var dateFrom = moment(vm.ordersService.selectedOrder.dateFrom);
-          var dateTo = moment(vm.ordersService.selectedOrder.dateTo);
+          var dateFrom = moment(vm.selectedOrder.dateFrom);
+          var dateTo = moment(vm.selectedOrder.dateTo);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.ordersService.selectedOrder.date = date;
+            vm.selectedOrder.date = date;
           }
 
         }
@@ -139,17 +160,15 @@
 
     function initializeDatepickerFrom() {
 
-      vm.ordersService.selectedOrder.dateFrom = moment().add(-4, 'days');
-
       datepickerFrom = {
         callback: function (val) {
 
           var dateFrom = moment(val);
-          var date = moment(vm.ordersService.selectedOrder.ate);
-          var dateTo = moment(vm.ordersService.selectedOrder.dateTo);
+          var date = moment(vm.selectedOrder.ate);
+          var dateTo = moment(vm.selectedOrder.dateTo);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.ordersService.selectedOrder.dateFrom = dateFrom;
+            vm.selectedOrder.dateFrom = dateFrom;
           }
 
         }
@@ -158,17 +177,15 @@
 
     function initializeDatepickerTo() {
 
-      vm.ordersService.selectedOrder.dateTo   = moment().add(-1, 'days');
-
       datepickerTo = {
         callback: function (val) {
 
           var dateTo = moment(val);
-          var date = moment(vm.ordersService.selectedOrder.date);
-          var dateFrom = moment(vm.ordersService.selectedOrder.dateFrom);
+          var date = moment(vm.selectedOrder.date);
+          var dateFrom = moment(vm.selectedOrder.dateFrom);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.ordersService.selectedOrder.dateTo = dateTo;
+            vm.selectedOrder.dateTo = dateTo;
           }
 
         }

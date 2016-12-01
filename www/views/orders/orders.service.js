@@ -9,7 +9,8 @@
     'utilsService',
     '$http',
     '$ionicPopup',
-    '$ionicTabsDelegate'
+    '$ionicTabsDelegate',
+    '$ionicLoading'
   ];
 
   function ordersService(
@@ -17,7 +18,8 @@
     utilsService,
     $http,
     $ionicPopup,
-    $ionicTabsDelegate
+    $ionicTabsDelegate,
+    $ionicLoading
   ) {
 
 
@@ -26,10 +28,35 @@
       setOrders        : setOrders,
       editOrder        : editOrder,
       generateNewOrder : generateNewOrder,
-      orders           : []
+      filterOrders     : filterOrders,
+      selectedOrder    : convertOrderToViewModel({}),
+      orders           : [],
+      data             : {
+        filters : {
+          from : moment(),
+          to   : moment()
+        }
+      }
     };
 
     return service;
+
+    function filterOrders() {
+
+      $ionicLoading.show({
+        template: 'Cargando órdenes...'
+      });
+
+      service
+      .getOrders(service.data.filters)
+      .then(function(response){
+        service.setOrders(response);
+      })
+      .finally(function(){
+        $ionicLoading.hide();
+      });
+
+    }
 
     function getOrders(data) {
 
@@ -70,8 +97,8 @@
 
     function editOrder(order) {
 
-      $ionicTabsDelegate.select(0);
       service.selectedOrder = convertOrderToViewModel(order);
+      $ionicTabsDelegate.select(0);
 
     }
 
@@ -79,9 +106,9 @@
 
       var vm             = {};
       vm.mobile          = order.movilId;
-      vm.date            = order.fecRecepcion;
-      vm.dateFrom        = order.fecDesde;
-      vm.dateTo          = order.fecHasta;
+      vm.date            = order.id ? order.fecRecepcion : moment();
+      vm.dateFrom        = order.id ? order.fecDesde     : moment().add(-4, 'days');
+      vm.dateTo          = order.id ? order.fecHasta     : moment().add(-1, 'days');
       vm.reportsQuantity = parseInt(order.cantidad);
       vm.id              = order.id;
       vm.title = vm.id ? "Edición de orden " + vm.id : "Nueva orden";

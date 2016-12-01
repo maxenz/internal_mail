@@ -1,6 +1,6 @@
 <ion-view>
 
-  <ion-nav-title>{{ orderCtrl.ordersService.selectedOrder.title}}</ion-nav-title>
+  <ion-nav-title>{{ orderCtrl.selectedOrder.title}}</ion-nav-title>
 
   <ion-nav-buttons side="right">
     <button class="button button-balanced icon ion-ios-plus" ng-click="orderCtrl.generateNewOrder()">
@@ -12,7 +12,7 @@
       <div class="list">
         <label class="item item-input item-stacked-label" ng-class="{ 'has-error': orderCtrl.orderForm.mobile.$touched && orderCtrl.orderForm.mobile.$invalid}">
           <span class="input-label bold">Móvil </span>
-          <input type="text" name="mobile" ng-model="orderCtrl.ordersService.selectedOrder.mobile" required />
+          <input type="text" name="mobile" ng-model="orderCtrl.selectedOrder.mobile" required />
           <div class="help-block" ng-messages="orderCtrl.orderForm.mobile.$error" ng-show="orderCtrl.orderForm.mobile.$touched">
             <div ng-messages-include="views/order/messages-validation.html"></div>
           </div>
@@ -22,7 +22,7 @@
           <span class="input-label bold">Fecha de recepción </span>
           <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(0)">
             <span>
-              {{ orderCtrl.ordersService.selectedOrder.date | amDateFormat: 'DD/MM/YYYY'}}
+              {{ orderCtrl.selectedOrder.date | amDateFormat: 'DD/MM/YYYY'}}
             </span>
             <i class="icon ion-arrow-down-b"></i>
           </button>
@@ -32,7 +32,7 @@
           <span class="input-label bold">Fecha desde </span>
           <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(1)">
             <span>
-              {{ orderCtrl.ordersService.selectedOrder.dateFrom| amDateFormat: 'DD/MM/YYYY'}}
+              {{ orderCtrl.selectedOrder.dateFrom| amDateFormat: 'DD/MM/YYYY'}}
             </span>
             <i class="icon ion-arrow-down-b"></i>
           </button>
@@ -42,7 +42,7 @@
           <span class="input-label bold">Fecha hasta </span>
           <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(2)">
             <span>
-              {{ orderCtrl.ordersService.selectedOrder.dateTo | amDateFormat: 'DD/MM/YYYY'}}
+              {{ orderCtrl.selectedOrder.dateTo | amDateFormat: 'DD/MM/YYYY'}}
             </span>
             <i class="icon ion-arrow-down-b"></i>
           </button>
@@ -52,7 +52,7 @@
           <div class="row padding-0">
             <div class="col col-67 padding-0">
               <span class="input-label bold">Cantidad </span>
-              <input type="number" name="reportsQuantity" ng-model="orderCtrl.ordersService.selectedOrder.reportsQuantity" required />
+              <input type="number" name="reportsQuantity" ng-model="orderCtrl.selectedOrder.reportsQuantity" required />
               <div class="help-block" ng-messages="orderCtrl.orderForm.reportsQuantity.$error" ng-show="orderCtrl.orderForm.reportsQuantity.$touched">
                 <div ng-messages-include="views/order/messages-validation.html"></div>
               </div>
@@ -64,7 +64,7 @@
         </div>
 
         <div class="padding">
-          <button type="button" class="button button-block button-balanced" ng-click="orderCtrl.submit()" ng-disabled="!orderCtrl.ordersService.selectedOrder.mobile || !orderCtrl.ordersService.selectedOrder.reportsQuantity">Enviar</button>
+          <button type="button" class="button button-block button-balanced" ng-click="orderCtrl.submit()" ng-disabled="!orderCtrl.selectedOrder.mobile || !orderCtrl.selectedOrder.reportsQuantity">Enviar</button>
         </div>
 
       </div>
