@@ -41,17 +41,8 @@
     vm.cantCalculateQuantity = cantCalculateQuantity;
     vm.getReportsQuantity    = getReportsQuantity;
     vm.ordersService         = ordersService;
-    vm.selectedOrder         = ordersService.selectedOrder;
     vm.generateNewOrder      = generateNewOrder;
     activate();
-
-    $scope.$watch(function() { return vm.ordersService.selectedOrder },
-                  function(newValue, oldValue) {
-                    if (newValue !== oldValue) {
-                      vm.selectedOrder = vm.ordersService.selectedOrder;
-                    }
-                  }
-                 );
 
     // --> Functions
     function activate() {
@@ -76,8 +67,8 @@
         var result = orderService.parseOrderResult(response);
         $ionicLoading.hide();
         if (parseInt(result.resultado) === 1) {
-          var orderId = vm.selectedOrder.id;
-          var mobile = vm.selectedOrder.mobile;
+          var orderId = vm.ordersService.selectedOrder.id;
+          var mobile = vm.ordersService.selectedOrder.mobile;
           if (orderId) {
             utilsService.showAlert('Operación exitosa!', 'La orden del móvil ' + mobile + ' se editó correctamente.');
           } else {
@@ -112,7 +103,7 @@
     }
 
     function cantCalculateQuantity() {
-      return !vm.selectedOrder.dateFrom || !vm.selectedOrder.dateTo || !vm.selectedOrder.mobile;
+      return !vm.ordersService.selectedOrder.dateFrom || !vm.ordersService.selectedOrder.dateTo || !vm.ordersService.selectedOrder.mobile;
     }
 
     function getReportsQuantity() {
@@ -121,9 +112,9 @@
         template: 'Consultando cantidad de reportes...'
       });
       orderService
-      .getReportsQuantity(vm.selectedOrder)
+      .getReportsQuantity(vm.ordersService.selectedOrder)
       .then(function(response){
-        vm.selectedOrder.reportsQuantity = orderService.parseReportsQuantityResult(response);
+        vm.ordersService.selectedOrder.reportsQuantity = orderService.parseReportsQuantityResult(response);
         $ionicLoading.hide();
       });
 
@@ -147,11 +138,11 @@
         callback: function (val) {
 
           var date = moment(val);
-          var dateFrom = moment(vm.selectedOrder.dateFrom);
-          var dateTo = moment(vm.selectedOrder.dateTo);
+          var dateFrom = moment(vm.ordersService.selectedOrder.dateFrom);
+          var dateTo = moment(vm.ordersService.selectedOrder.dateTo);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.selectedOrder.date = date;
+            vm.ordersService.selectedOrder.date = date;
           }
 
         }
@@ -164,11 +155,11 @@
         callback: function (val) {
 
           var dateFrom = moment(val);
-          var date = moment(vm.selectedOrder.ate);
-          var dateTo = moment(vm.selectedOrder.dateTo);
+          var date = moment(vm.ordersService.selectedOrder.ate);
+          var dateTo = moment(vm.ordersService.selectedOrder.dateTo);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.selectedOrder.dateFrom = dateFrom;
+            vm.ordersService.selectedOrder.dateFrom = dateFrom;
           }
 
         }
@@ -181,11 +172,11 @@
         callback: function (val) {
 
           var dateTo = moment(val);
-          var date = moment(vm.selectedOrder.date);
-          var dateFrom = moment(vm.selectedOrder.dateFrom);
+          var date = moment(vm.ordersService.selectedOrder.date);
+          var dateFrom = moment(vm.ordersService.selectedOrder.dateFrom);
 
           if (validateDates(date, dateFrom, dateTo)) {
-            vm.selectedOrder.dateTo = dateTo;
+            vm.ordersService.selectedOrder.dateTo = dateTo;
           }
 
         }
