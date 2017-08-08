@@ -82,6 +82,11 @@
         } else {
           utilsService.showAlert('Error!', result.mensajeError);
         }
+      }, function(error) {
+        utilsService.showAlert('Error!', 'No se pudo generar la orden');
+      })
+      .finally(function(){
+          $ionicLoading.hide();
       });
 
     }

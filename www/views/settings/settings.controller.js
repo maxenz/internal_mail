@@ -12,7 +12,9 @@
     'settingsService',
     'utilsService',
     'loginService',
-    '$state'
+    '$state',
+    '$scope',
+    'ordersService'
   ];
 
   function SettingsCtrl(
@@ -21,19 +23,25 @@
     settingsService,
     utilsService,
     loginService,
-    $state
+    $state,
+    $scope,
+    ordersService
   ) {
 
     // --> Declarations
     var vm                 = this;
     vm.data                = {};
-    vm.data.user           = window.localStorage.getItem('user');
+    vm.data.user           = null;
     vm.data.messages       = ERRORS;
     vm.generateUrl         = generateUrl;
     vm.settingsService     = settingsService;
     vm.logout              = logout;
 
     activate();
+
+    $scope.$on('$ionicView.beforeEnter', function(){
+      vm.data.user = window.localStorage.getItem('user');
+    });
 
     // --> Functions
     function activate() {
@@ -65,6 +73,7 @@
     }
 
     function logout() {
+      ordersService.orders = [];
       loginService.logout();
     }
 

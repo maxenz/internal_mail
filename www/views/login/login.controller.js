@@ -46,6 +46,7 @@
             window.localStorage.setItem("userId", parseInt(result.id));
             loginService.data.isAuthenticated = true;
             loginService.data.authData = result;
+            vm.data = {};
             $state.go('tab.orders');
 
           } else {

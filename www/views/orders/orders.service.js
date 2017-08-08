@@ -51,7 +51,9 @@
       .getOrders(service.data.filters)
       .then(function(response){
         service.setOrders(response);
-      })
+      }, function(error){
+        utilsService.showAlert('Error!', 'No se pudieron obtener las órdenes');
+      })  
       .finally(function(){
         $ionicLoading.hide();
       });
@@ -61,9 +63,10 @@
     function getOrders(data) {
 
       var url = URLS.orders
-      + 'soap_method=GetRecepcion'
+      + 'soap_method=GetRecepcionV2'
       + '&pDes=' + moment(data.from).format('YYYYMMDD')
       + '&pHas=' + moment(data.to).format('YYYYMMDD')
+      + '&pUsr=' + window.localStorage.getItem('user');
 
       return $http.get(url).then(function(response) {
         return response.data;
@@ -72,9 +75,9 @@
     }
 
     function setOrders(data) {
-
+     
       var json   = utilsService.xmlToJsonResponse(data);
-      var orders = json.getRecepcionResponse.getRecepcionResult.diffgram.defaultDataSet.sQL;
+      var orders = json.getRecepcionV2Response.getRecepcionV2Result.diffgram.defaultDataSet.sQL;
       if (orders) {
         formatOrders(orders);
       }

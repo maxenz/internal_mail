@@ -44,7 +44,7 @@
       + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
       + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
       + '&pCnt=' + data.reportsQuantity
-      + '&pUsr=' + window.localStorage.getItem("userId")
+      + '&pUsr=' + window.localStorage.getItem("user")
 
       return $http.post(url).then(function(response) {
         return response.data;
@@ -56,19 +56,6 @@
       var json                = utilsService.xmlToJsonResponse(data);
       var result              = json.setRecepcionResponse.setRecepcionResult.diffgram.defaultDataSet.sQL;
       return result;
-    }
-
-    function getOrder(data) {
-
-      var url = URLS.orders
-      + 'soap_method=GetRecepcion'
-      + '&pDes=' + moment(data.from).format('YYYYMMDD')
-      + '&pHas=' + moment(data.to).format('YYYYMMDD')
-
-      return $http.get(url).then(function(response) {
-        return response.data;
-      });
-
     }
 
     function setOrder(data) {
