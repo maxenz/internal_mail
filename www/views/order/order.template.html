@@ -63,6 +63,29 @@
           </div>
         </div>
 
+        <div class="list" style="margin-bottom:0">
+          <label class="item item-input item-select" style="height:54px">
+            <div class="input-label" style="width:50%">
+              <b>Base Operativa</b>
+            </div>
+            <select ng-model="orderCtrl.ordersService.selectedOrder.operationalBase" style="width:50%">
+              <option ng-repeat="opBase in orderCtrl.operationalBases" value="{{opBase.id}}">
+                {{opBase.descripcion}}
+              </option>
+            </select>
+          </label>
+        </div>
+
+        <div class="item item-toggle">
+          <span class="bold">Incompleto</span>
+          <label class="toggle toggle-balanced">
+            <input type="checkbox" ng-model="orderCtrl.ordersService.selectedOrder.incomplete" />
+            <div class="track">
+              <div class="handle"></div>
+            </div>
+          </label>
+        </div>
+
         <div class="padding">
           <button type="button" class="button button-block button-balanced" ng-click="orderCtrl.submit()" ng-disabled="!orderCtrl.ordersService.selectedOrder.mobile || !orderCtrl.ordersService.selectedOrder.reportsQuantity">Enviar</button>
         </div>

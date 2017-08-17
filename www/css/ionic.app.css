@@ -9877,15 +9877,16 @@ div.list.list-no-padding {
 
 span.mobile {
   display: block;
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
+  font-size: 13px;
+  height: 35px;
+  width: 35px;
+  line-height: 35px;
+  margin-left: 25%;
   -moz-border-radius: 20px;
   border-radius: 20px;
   background-color: #8bc541;
   color: white;
-  text-align: center;
-  font-size: 1em; }
+  text-align: center; }
 
 .font-size-12 {
   font-size: 12px; }
@@ -9905,3 +9906,16 @@ label.item.has-error {
   padding-bottom: 2px; }
   .button-order-date > i {
     padding-top: 0 !important; }
+
+.margin-left-5 {
+  margin-left: 5px; }
+
+.custom-badge {
+  top: auto !important;
+  right: auto !important;
+  position: relative !important;
+  font-size: 10px !important;
+  padding: 2px !important; }
+
+.margin-top-5 {
+  margin-top: 5px; }

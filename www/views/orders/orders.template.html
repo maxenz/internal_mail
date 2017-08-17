@@ -30,9 +30,10 @@
       </div>
 
       <a href="" class="item padding-2" ng-repeat="order in ordersCtrl.ordersService.orders" ng-click="ordersCtrl.editOrder(order)">
-        <div class="row">
+        <div class="row" style="padding:0">
           <div class="col col-20">
             <span class="mobile margin-top-3">M{{ order.movilId }}</span>
+            <span class="badge custom-badge badge-assertive margin-top-5 margin-left-5" ng-if="order.incomplete">Incompleta</span>
           </div>
           <div class="col col-80 font-size-12">
             <div class="row">
@@ -40,6 +41,9 @@
             </div>
             <div class="row">
               Fecha de generación: <span class="bold padding-left-5">{{ order.fecRecepcion | amDateFormat: 'DD/MM/YYYY' }}</span>
+            </div>
+            <div class="row">
+              Base Operativa: <span class="bold margin-left-5">{{ order.baseCodigo }}</span> 
             </div>
           </div>
         </div>

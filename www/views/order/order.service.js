@@ -24,7 +24,10 @@
       createOrder                : createOrder,
       parseOrderResult           : parseOrderResult,
       getReportsQuantity         : getReportsQuantity,
-      parseReportsQuantityResult : parseReportsQuantityResult
+      parseReportsQuantityResult : parseReportsQuantityResult,
+      getOperationalBases        : getOperationalBases,
+      parseOperationalBasesResult: parseOperationalBasesResult,
+      operationalBasesTries      : 0
     };
 
     return service;
@@ -37,14 +40,18 @@
       if (!data.id) data.id = 0;
 
       var url = URLS.orders
-      + 'soap_method=SetRecepcion'
+      + 'soap_method=SetRecepcionV2'
       + '&pId='  + data.id
       + '&pMov=' + data.mobile
       + '&pFec=' + moment(data.date).format('YYYYMMDD')
       + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
       + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
       + '&pCnt=' + data.reportsQuantity
-      + '&pUsr=' + window.localStorage.getItem("user")
+      + '&pIcp=' + +data.incomplete
+      + '&pBas=' + data.operationalBase
+      + '&pUsr=' + window.localStorage.getItem("user");
+
+      window.localStorage.setItem('favoriteOperationalBase', data.operationalBase);
 
       return $http.post(url).then(function(response) {
         return response.data;
@@ -54,7 +61,7 @@
 
     function parseOrderResult(data) {
       var json                = utilsService.xmlToJsonResponse(data);
-      var result              = json.setRecepcionResponse.setRecepcionResult.diffgram.defaultDataSet.sQL;
+      var result              = json.setRecepcionV2Response.setRecepcionV2Result.diffgram.defaultDataSet.sQL;
       return result;
     }
 
@@ -84,7 +91,7 @@
       + 'soap_method=GetCantidad'
       + '&pMov=' + data.mobile
       + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
-      + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
+      + '&pHas=' + moment(data.dateTo).format('YYYYMMDD');
 
       return $http.get(url).then(function(response) {
         return response.data;
@@ -97,6 +104,38 @@
       return parseInt(result.cantidad);
     }
 
+    function getOperationalBases(showMessage) {
+      var url = URLS.orders
+      + 'soap_method=GetBasesOperativas';
+
+      $http
+        .get(url)
+        .then((response) => handlerOkGetOperationalBases(response,showMessage), handlerErrorGetOperationalBases);
+    }
+
+    function handlerOkGetOperationalBases(response, showMessage) {
+      var operationalBases = parseOperationalBasesResult(response.data);
+      window.localStorage.setObject('operationalBases', operationalBases);
+      if (showMessage) {
+        utilsService.showAlert("Actualización exitosa!", "Las bases operativas fueron actualizadas correctamente.");
+      }
+    }
+
+    function handlerErrorGetOperationalBases(response) {
+      service.operationalBasesTries++;
+      if (service.operationalBasesTries > 2) {
+        utilsService.showAlert('Error!', 'No se pudieron obtener las bases operativas. Reingrese a la aplicación.');
+      } else {
+        getOperationalBases();
+      }
+
+    }
+
+    function parseOperationalBasesResult(data) {
+      var json   = utilsService.xmlToJsonResponse(data);
+      var result = json.getBasesOperativasResponse.getBasesOperativasResult.diffgram.defaultDataSet.sQL;
+      return result;
+    }
 
   }
 

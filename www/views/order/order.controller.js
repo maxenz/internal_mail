@@ -4,7 +4,7 @@
 
   angular.module('internalMail.controllers')
 
-  .controller('OrderCtrl', OrderCtrl);
+    .controller('OrderCtrl', OrderCtrl);
 
   OrderCtrl.$inject = [
     'loginService',
@@ -34,14 +34,16 @@
 
     // --> Declarations
     var datepickerDate, datepickerFrom, datepickerTo;
-    var vm                   = this;
-    vm.data                  = {};
-    vm.submit                = submit;
-    vm.openDatePicker        = openDatePicker;
+    var vm = this;
+    vm.data = {};
+    vm.submit = submit;
+    vm.openDatePicker = openDatePicker;
     vm.cantCalculateQuantity = cantCalculateQuantity;
-    vm.getReportsQuantity    = getReportsQuantity;
-    vm.ordersService         = ordersService;
-    vm.generateNewOrder      = generateNewOrder;
+    vm.getReportsQuantity = getReportsQuantity;
+    vm.ordersService = ordersService;
+    vm.generateNewOrder = generateNewOrder;
+    vm.operationalBases = window.localStorage.getObject('operationalBases');
+
     activate();
 
     // --> Functions
@@ -52,8 +54,6 @@
 
       initializeDatepickers();
       ordersService.generateNewOrder();
-
-
     }
 
     function submit() {
@@ -62,47 +62,47 @@
         template: 'Creando orden...'
       });
       orderService
-      .createOrder()
-      .then(function(response){
-        var result = orderService.parseOrderResult(response);
-        $ionicLoading.hide();
-        if (parseInt(result.resultado) === 1) {
-          var orderId = vm.ordersService.selectedOrder.id;
-          var mobile = vm.ordersService.selectedOrder.mobile;
-          if (orderId) {
-            utilsService.showAlert('Operación exitosa!', 'La orden del móvil ' + mobile + ' se editó correctamente.');
-          } else {
-            utilsService.showAlert('Operación exitosa!', 'La orden se creó correctamente.');
-          }
-
-          generateNewOrder();
-          ordersService.filterOrders();
-          $ionicTabsDelegate.select(1);
-
-        } else {
-          utilsService.showAlert('Error!', result.mensajeError);
-        }
-      }, function(error) {
-        utilsService.showAlert('Error!', 'No se pudo generar la orden');
-      })
-      .finally(function(){
+        .createOrder()
+        .then(function (response) {
+          var result = orderService.parseOrderResult(response);
           $ionicLoading.hide();
-      });
+          if (parseInt(result.resultado) === 1) {
+            var orderId = vm.ordersService.selectedOrder.id;
+            var mobile = vm.ordersService.selectedOrder.mobile;
+            if (orderId) {
+              utilsService.showAlert('Operación exitosa!', 'La orden del móvil ' + mobile + ' se editó correctamente.');
+            } else {
+              utilsService.showAlert('Operación exitosa!', 'La orden se creó correctamente.');
+            }
+
+            generateNewOrder();
+            ordersService.filterOrders();
+            $ionicTabsDelegate.select(1);
+
+          } else {
+            utilsService.showAlert('Error!', result.mensajeError);
+          }
+        }, function (error) {
+          utilsService.showAlert('Error!', 'No se pudo generar la orden');
+        })
+        .finally(function () {
+          $ionicLoading.hide();
+        });
 
     }
 
-    function openDatePicker(dateType){
+    function openDatePicker(dateType) {
 
       switch (dateType) {
         case 0:
-        ionicDatePicker.openDatePicker(datepickerDate);
-        break;
+          ionicDatePicker.openDatePicker(datepickerDate);
+          break;
         case 1:
-        ionicDatePicker.openDatePicker(datepickerFrom);
-        break;
+          ionicDatePicker.openDatePicker(datepickerFrom);
+          break;
         case 2:
-        ionicDatePicker.openDatePicker(datepickerTo);
-        break;
+          ionicDatePicker.openDatePicker(datepickerTo);
+          break;
       }
 
     }
@@ -117,11 +117,11 @@
         template: 'Consultando cantidad de reportes...'
       });
       orderService
-      .getReportsQuantity(vm.ordersService.selectedOrder)
-      .then(function(response){
-        vm.ordersService.selectedOrder.reportsQuantity = orderService.parseReportsQuantityResult(response);
-        $ionicLoading.hide();
-      });
+        .getReportsQuantity(vm.ordersService.selectedOrder)
+        .then(function (response) {
+          vm.ordersService.selectedOrder.reportsQuantity = orderService.parseReportsQuantityResult(response);
+          $ionicLoading.hide();
+        });
 
     }
 

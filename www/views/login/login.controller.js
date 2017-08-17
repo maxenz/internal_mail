@@ -4,7 +4,7 @@
 
   angular.module('internalMail.controllers')
 
-  .controller('LoginCtrl', LoginCtrl);
+    .controller('LoginCtrl', LoginCtrl);
 
   LoginCtrl.$inject = [
     'loginService',
@@ -12,7 +12,8 @@
     '$ionicPopup',
     'utilsService',
     'ERRORS',
-    '$ionicLoading'
+    '$ionicLoading',
+    'orderService'
   ]
 
   function LoginCtrl(
@@ -21,7 +22,8 @@
     $ionicPopup,
     utilsService,
     ERRORS,
-    $ionicLoading
+    $ionicLoading,
+    orderService
   ) {
 
     var vm = this;
@@ -36,34 +38,39 @@
           template: 'Iniciando sesión...'
         });
         loginService.login(vm.data)
-        .then(function(response) {
+          .then(function (response) {
 
-          var result = loginService.parseLoginResponse(response);
+            var result = loginService.parseLoginResponse(response);
 
-          if (result) {
-            window.localStorage.setItem("r4c1ng", result.id + "&r4c1ng");
-            window.localStorage.setItem("user", result.identificacion);
-            window.localStorage.setItem("userId", parseInt(result.id));
-            loginService.data.isAuthenticated = true;
-            loginService.data.authData = result;
-            vm.data = {};
-            $state.go('tab.orders');
+            if (result) {
+              window.localStorage.setItem("r4c1ng", result.id + "&r4c1ng");
+              window.localStorage.setItem("user", result.identificacion);
+              window.localStorage.setItem("userId", parseInt(result.id));
+              loginService.data.isAuthenticated = true;
+              loginService.data.authData = result;
+              vm.data = {};
 
-          } else {
+              if (!window.localStorage.getObject('operationalBases')) {
+                orderService.getOperationalBases();
+              }
 
-            utilsService.showAlert('Error!',ERRORS.incorrectData);
-            vm.data.password = '';
+              $state.go('tab.orders');
 
-          }
+            } else {
+
+              utilsService.showAlert('Error!', ERRORS.incorrectData);
+              vm.data.password = '';
+
+            }
 
 
-        }).catch(function(data) {
+          }).catch(function (data) {
 
-          utilsService.showAlert('Error!',ERRORS.incorrectData);
+            utilsService.showAlert('Error!', ERRORS.incorrectData);
 
-        }).finally(function(){
-          $ionicLoading.hide();
-        });
+          }).finally(function () {
+            $ionicLoading.hide();
+          });
 
       }
 

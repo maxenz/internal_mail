@@ -42,7 +42,6 @@
     }
 
     function parseLoginResponse(data) {
-
       var json      = utilsService.xmlToJsonResponse(data);
       var loginData = json.loginMobileGerencialResponse.loginMobileGerencialResult.diffgram.defaultDataSet.sQL;
       return loginData;
@@ -61,7 +60,9 @@
 
     function logout() {
       service.data.isAuthenticated = false;
-      window.localStorage.clear();
+      delete window.localStorage["user"];
+      delete window.localStorage["userId"];
+      delete window.localStorage["r4c1ng"];
       $state.go('login');
     }
 
