@@ -31,10 +31,10 @@
 
     function login (userData) {
 
-      var url = URLS.login
-      + 'soap_method=LoginMobileGerencial'
-      + '&pIde=' + userData.userName
-      + '&pPsw=' + userData.password;
+      var url = URLS.login +
+       'soap_method=LoginMobileGerencial' +
+       '&pIde=' + userData.userName +
+       '&pPsw=' + userData.password;
 
       return $http.post(url).then(function(response) {
         return response.data;
@@ -60,9 +60,9 @@
 
     function logout() {
       service.data.isAuthenticated = false;
-      delete window.localStorage["user"];
-      delete window.localStorage["userId"];
-      delete window.localStorage["r4c1ng"];
+      delete window.localStorage.user;
+      delete window.localStorage.userId;
+      delete window.localStorage.r4c1ng;
       $state.go('login');
     }
 

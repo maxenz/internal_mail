@@ -17,6 +17,6 @@
     dateFromMustBeSmallerThanDateTo : 'La fecha desde debe ser menor o igual a la fecha hasta.',
     mustCompleteDateFrom            : 'Debe completar la fecha desde',
     receptionDateMustBeGreatherThan : 'La fecha de recepción de la orden debe ser superior a las fechas desde/hasta'
-  })
+  });
 
 })();
