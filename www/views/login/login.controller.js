@@ -14,7 +14,7 @@
     'ERRORS',
     '$ionicLoading',
     'orderService'
-  ]
+  ];
 
   function LoginCtrl(
     loginService,

@@ -111,7 +111,7 @@
 
       $http
         .get(url)
-        .then((response) => handlerOkGetOperationalBases(response,showMessage), handlerErrorGetOperationalBases);
+        .then(function(response) { handlerOkGetOperationalBases(response,showMessage)}, handlerErrorGetOperationalBases);
     }
 
     function handlerOkGetOperationalBases(response, showMessage) {
