@@ -43,7 +43,9 @@
               Fecha de generación: <span class="bold padding-left-5">{{ order.fecRecepcion | amDateFormat: 'DD/MM/YYYY' }}</span>
             </div>
             <div class="row">
-              Base Operativa: <span class="bold margin-left-5">{{ order.baseCodigo }}</span> 
+              Base Operativa: <span class="bold margin-left-5 margin-right-5">{{ order.baseCodigo }}</span> -
+               <span class="margin-right-5 margin-left-5">Sobre <b>{{order.envelopeNumber}}</b></span>
+
             </div>
           </div>
         </div>

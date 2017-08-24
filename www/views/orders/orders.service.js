@@ -93,6 +93,7 @@
         order.fecHasta = moment(order.fecHasta, 'YYYYMMDD');
         order.fecRecepcion = moment(order.fecRecepcion, 'YYYYMMDD');
         order.incomplete = parseInt(order.flgIncompleto);
+        order.envelopeNumber = order.nroSobre;
       });
 
       service.orders = orders;
@@ -117,6 +118,7 @@
       vm.id              = order.id;
       vm.title = vm.id ? "Edición de orden " + vm.id : "Nueva orden";
       vm.incomplete = false;
+      vm.envelopeNumber = parseInt(order.nroSobre);
       var favOperationalBase = window.localStorage.getItem('favoriteOperationalBase');
       vm.operationalBase = favOperationalBase || null;
       return vm;

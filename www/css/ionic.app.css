@@ -9872,6 +9872,9 @@ div.list.list-no-padding {
 .padding-bottom-0 {
   padding-bottom: 0 !important; }
 
+.padding-top-0 {
+  padding-top: 0 !important; }
+
 .margin-right-2-percent {
   margin-right: 2%; }
 
@@ -9909,6 +9912,9 @@ label.item.has-error {
 
 .margin-left-5 {
   margin-left: 5px; }
+
+.margin-right-5 {
+  margin-right: 5px; }
 
 .custom-badge {
   top: auto !important;

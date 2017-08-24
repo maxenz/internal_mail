@@ -10,7 +10,7 @@
   <ion-content class="has-header">
     <form name="orderCtrl.orderForm" novalidate>
       <div class="list">
-        <label class="item item-input item-stacked-label" ng-class="{ 'has-error': orderCtrl.orderForm.mobile.$touched && orderCtrl.orderForm.mobile.$invalid}">
+        <label class="item item-input item-stacked-label padding-bottom-0 padding-top-0" ng-class="{ 'has-error': orderCtrl.orderForm.mobile.$touched && orderCtrl.orderForm.mobile.$invalid}">
           <span class="input-label bold">Móvil </span>
           <input type="text" name="mobile" ng-model="orderCtrl.ordersService.selectedOrder.mobile" required />
           <div class="help-block" ng-messages="orderCtrl.orderForm.mobile.$error" ng-show="orderCtrl.orderForm.mobile.$touched">
@@ -85,6 +85,11 @@
             </div>
           </label>
         </div>
+
+        <label class="item item-input item-stacked-label padding-top-0 padding-bottom-0">
+          <span class="input-label bold">Número de sobre </span>
+          <input type="number" ng-model="orderCtrl.ordersService.selectedOrder.envelopeNumber" />
+        </label>
 
         <div class="padding">
           <button type="button" class="button button-block button-balanced" ng-click="orderCtrl.submit()" ng-disabled="!orderCtrl.ordersService.selectedOrder.mobile || !orderCtrl.ordersService.selectedOrder.reportsQuantity">Enviar</button>

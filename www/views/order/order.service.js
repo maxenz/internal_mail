@@ -48,6 +48,7 @@
       + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
       + '&pCnt=' + data.reportsQuantity
       + '&pIcp=' + +data.incomplete
+      + '&pSob=' + data.envelopeNumber
       + '&pBas=' + data.operationalBase
       + '&pUsr=' + window.localStorage.getItem("user");
 
