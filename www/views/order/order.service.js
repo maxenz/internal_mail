@@ -1,8 +1,8 @@
-(function(){
+(function () {
 
   angular
-  .module('internalMail.services')
-  .factory('orderService', orderService);
+    .module('internalMail.services')
+    .factory('orderService', orderService);
 
   orderService.$inject = [
     'URLS',
@@ -12,22 +12,20 @@
     'ordersService'
   ];
 
-  function orderService(
-    URLS,
-    utilsService,
-    $http,
-    $ionicPopup,
-    ordersService
-  ) {
+  function orderService(URLS,
+                        utilsService,
+                        $http,
+                        $ionicPopup,
+                        ordersService) {
 
     var service = {
-      createOrder                : createOrder,
-      parseOrderResult           : parseOrderResult,
-      getReportsQuantity         : getReportsQuantity,
-      parseReportsQuantityResult : parseReportsQuantityResult,
-      getOperationalBases        : getOperationalBases,
+      createOrder: createOrder,
+      parseOrderResult: parseOrderResult,
+      getReportsQuantity: getReportsQuantity,
+      parseReportsQuantityResult: parseReportsQuantityResult,
+      getOperationalBases: getOperationalBases,
       parseOperationalBasesResult: parseOperationalBasesResult,
-      operationalBasesTries      : 0
+      operationalBasesTries: 0
     };
 
     return service;
@@ -38,38 +36,40 @@
 
       // Si es 0, es creacion. Si tiene id, es edicion.
       if (!data.id) data.id = 0;
+      var doctor = data.doctor ? data.doctor : "";
 
       var url = URLS.orders
-      + 'soap_method=SetRecepcionV2'
-      + '&pId='  + data.id
-      + '&pMov=' + data.mobile
-      + '&pFec=' + moment(data.date).format('YYYYMMDD')
-      + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
-      + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
-      + '&pCnt=' + data.reportsQuantity
-      + '&pIcp=' + +data.incomplete
-      + '&pSob=' + data.envelopeNumber
-      + '&pBas=' + data.operationalBase
-      + '&pUsr=' + window.localStorage.getItem("user");
+        + 'soap_method=SetRecepcion'
+        + '&pId=' + data.id
+        + '&pMov=' + data.mobile
+        + '&pPer=' + doctor
+        + '&pFec=' + moment(data.date).format('YYYYMMDD')
+        + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
+        + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
+        + '&pCnt=' + data.reportsQuantity
+        + '&pIcp=' + +data.incomplete
+        + '&pSob=' + data.envelopeNumber
+        + '&pBas=' + data.operationalBase
+        + '&pUsr=' + window.localStorage.getItem("user");
 
       window.localStorage.setItem('favoriteOperationalBase', data.operationalBase);
 
-      return $http.post(url).then(function(response) {
+      return $http.post(url).then(function (response) {
         return response.data;
       });
 
     }
 
     function parseOrderResult(data) {
-      var json                = utilsService.xmlToJsonResponse(data);
-      var result              = json.setRecepcionV2Response.setRecepcionV2Result.diffgram.defaultDataSet.sQL;
+      var json = utilsService.xmlToJsonResponse(data);
+      var result = json.setRecepcionResponse.setRecepcionResult.diffgram.defaultDataSet.sQL;
       return result;
     }
 
     function setOrder(data) {
 
-      var json                = utilsService.xmlToJsonResponse(data);
-      var orders              = json.getRecepcionResponse.getRecepcionResult.diffgram.defaultDataSet.sQL;
+      var json = utilsService.xmlToJsonResponse(data);
+      var orders = json.getRecepcionResponse.getRecepcionResult.diffgram.defaultDataSet.sQL;
       formatOrders(orders);
     }
 
@@ -77,7 +77,7 @@
 
       orders = utilsService.setResponseAsArray(orders);
 
-      orders.forEach(function(order){
+      orders.forEach(function (order) {
         order.fecDesde = moment(order.fecDesde, 'YYYYMMDD');
         order.fecHasta = moment(order.fecHasta, 'YYYYMMDD');
         order.fecRecepcion = moment(order.fecRecepcion, 'YYYYMMDD');
@@ -89,29 +89,33 @@
 
     function getReportsQuantity(data) {
       var url = URLS.orders
-      + 'soap_method=GetCantidad'
-      + '&pMov=' + data.mobile
-      + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
-      + '&pHas=' + moment(data.dateTo).format('YYYYMMDD');
+        + 'soap_method=GetCantidad'
+        + '&pMov=' + data.mobile
+        + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
+        + '&pHas=' + moment(data.dateTo).format('YYYYMMDD');
 
-      return $http.get(url).then(function(response) {
+      return $http.get(url).then(function (response) {
         return response.data;
       });
     }
 
+
+
     function parseReportsQuantityResult(data) {
-      var json   = utilsService.xmlToJsonResponse(data);
+      var json = utilsService.xmlToJsonResponse(data);
       var result = json.getCantidadResponse.getCantidadResult.diffgram.defaultDataSet.sQL;
       return parseInt(result.cantidad);
     }
 
     function getOperationalBases(showMessage) {
       var url = URLS.orders
-      + 'soap_method=GetBasesOperativas';
+        + 'soap_method=GetBasesOperativas';
 
       $http
         .get(url)
-        .then(function(response) { handlerOkGetOperationalBases(response,showMessage)}, handlerErrorGetOperationalBases);
+        .then(function (response) {
+          handlerOkGetOperationalBases(response, showMessage)
+        }, handlerErrorGetOperationalBases);
     }
 
     function handlerOkGetOperationalBases(response, showMessage) {
@@ -133,7 +137,7 @@
     }
 
     function parseOperationalBasesResult(data) {
-      var json   = utilsService.xmlToJsonResponse(data);
+      var json = utilsService.xmlToJsonResponse(data);
       var result = json.getBasesOperativasResponse.getBasesOperativasResult.diffgram.defaultDataSet.sQL;
       return result;
     }

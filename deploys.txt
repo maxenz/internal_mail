@@ -27,8 +27,7 @@ En el mismo cmd, hacer cd platforms cd android.
 
 Ejecutar lo siguiente:
 
- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore shamanGerencia.keystore
-  build/outputs/apk/android-release-unsigned.apk shamanGerencia
+ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore shamanGerencia.keystore build/outputs/apk/android-release-unsigned.apk shamanGerencia
 
   hacer cd .. cd ..
 

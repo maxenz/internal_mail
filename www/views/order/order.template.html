@@ -10,57 +10,75 @@
   <ion-content class="has-header">
     <form name="orderCtrl.orderForm" novalidate>
       <div class="list">
-        <label class="item item-input item-stacked-label padding-bottom-0 padding-top-0" ng-class="{ 'has-error': orderCtrl.orderForm.mobile.$touched && orderCtrl.orderForm.mobile.$invalid}">
-          <span class="input-label bold">Móvil </span>
-          <input type="text" name="mobile" ng-model="orderCtrl.ordersService.selectedOrder.mobile" required />
-          <div class="help-block" ng-messages="orderCtrl.orderForm.mobile.$error" ng-show="orderCtrl.orderForm.mobile.$touched">
+        <label class="item item-input"
+               ng-class="{ 'has-error': orderCtrl.orderForm.mobile.$touched && orderCtrl.orderForm.mobile.$invalid}">
+          <span class="input-label bold width-0">Móvil </span>
+          <input type="text" name="mobile" ng-model="orderCtrl.ordersService.selectedOrder.mobile"
+                 ng-change="orderCtrl.getDoctors()" ng-model-options='{ debounce: 1000 }' required/>
+          <div class="help-block width-100-percent" ng-messages="orderCtrl.orderForm.mobile.$error"
+               ng-show="orderCtrl.orderForm.mobile.$touched">
             <div ng-messages-include="views/order/messages-validation.html"></div>
           </div>
         </label>
 
-        <label class="item item-input item-stacked-label">
-          <span class="input-label bold">Fecha de recepción </span>
-          <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(0)">
+        <div class="item item-button-right">
+          <span class="bold">Fecha de recepción </span>
+          <button class=" button button-small button-stable date"
+                  ng-click="orderCtrl.openDatePicker(0)">
             <span>
               {{ orderCtrl.ordersService.selectedOrder.date | amDateFormat: 'DD/MM/YYYY'}}
             </span>
             <i class="icon ion-arrow-down-b"></i>
           </button>
-        </label>
+        </div>
 
-        <label class="item item-input item-stacked-label">
-          <span class="input-label bold">Fecha desde </span>
-          <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(1)">
+        <div class="item item-button-right">
+          <span class="bold">Fecha desde </span>
+          <button class=" button button-small button-stable date"
+                  ng-click="orderCtrl.openDatePicker(1)">
             <span>
-              {{ orderCtrl.ordersService.selectedOrder.dateFrom| amDateFormat: 'DD/MM/YYYY'}}
+              {{ orderCtrl.ordersService.selectedOrder.dateFrom | amDateFormat: 'DD/MM/YYYY'}}
             </span>
             <i class="icon ion-arrow-down-b"></i>
           </button>
-        </label>
+        </div>
 
-        <label class="item item-input item-stacked-label">
-          <span class="input-label bold">Fecha hasta </span>
-          <button class="col col-50 button button-small button-stable margin-right-2-percent button-order-date" ng-click="orderCtrl.openDatePicker(2)">
+        <div class="item item-button-right">
+          <span class="bold">Fecha hasta </span>
+          <button class=" button button-small button-stable date"
+                  ng-click="orderCtrl.openDatePicker(2)">
             <span>
               {{ orderCtrl.ordersService.selectedOrder.dateTo | amDateFormat: 'DD/MM/YYYY'}}
             </span>
             <i class="icon ion-arrow-down-b"></i>
           </button>
-        </label>
+        </div>
 
-        <div class="item item-input item-stacked-label" ng-class="{ 'has-error': orderCtrl.orderForm.reportsQuantity.$touched && orderCtrl.orderForm.reportsQuantity.$invalid}">
-          <div class="row padding-0">
-            <div class="col col-67 padding-0">
-              <span class="input-label bold">Cantidad </span>
-              <input type="number" name="reportsQuantity" ng-model="orderCtrl.ordersService.selectedOrder.reportsQuantity" required />
-              <div class="help-block" ng-messages="orderCtrl.orderForm.reportsQuantity.$error" ng-show="orderCtrl.orderForm.reportsQuantity.$touched">
-                <div ng-messages-include="views/order/messages-validation.html"></div>
-              </div>
+        <div class="list" style="margin-bottom:0;padding-top:0">
+          <label class="item item-input item-select" style="height:54px">
+            <div class="input-label" style="width:50%">
+              <b>Médico</b>
             </div>
-            <div class="col col-33">
-              <button type="button" class="button button-balanced" ng-disabled="orderCtrl.cantCalculateQuantity()" ng-click="orderCtrl.getReportsQuantity()">Calcular</button>
-            </div>
+            <select ng-model="orderCtrl.ordersService.selectedOrder.doctor" style="width:50%">
+              <option ng-repeat="doctor in orderCtrl.ordersService.doctors" value="{{doctor.id}}">
+                {{doctor.name}}
+              </option>
+            </select>
+          </label>
+        </div>
+
+        <div class="item item-button-right"
+             ng-class="{ 'has-error': orderCtrl.orderForm.reportsQuantity.$touched && orderCtrl.orderForm.reportsQuantity.$invalid}">
+          <span class="bold">Cantidad </span>
+          <input type="number" name="reportsQuantity"
+                 ng-model="orderCtrl.ordersService.selectedOrder.reportsQuantity" required/>
+          <div class="help-block" ng-messages="orderCtrl.orderForm.reportsQuantity.$error"
+               ng-show="orderCtrl.orderForm.reportsQuantity.$touched">
+            <div ng-messages-include="views/order/messages-validation.html"></div>
           </div>
+          <button type="button" class="button button-balanced" ng-disabled="orderCtrl.cantCalculateQuantity()"
+                  ng-click="orderCtrl.getReportsQuantity()">Calcular
+          </button>
         </div>
 
         <div class="list" style="margin-bottom:0">
@@ -79,20 +97,23 @@
         <div class="item item-toggle">
           <span class="bold">Incompleto</span>
           <label class="toggle toggle-balanced">
-            <input type="checkbox" ng-model="orderCtrl.ordersService.selectedOrder.incomplete" />
+            <input type="checkbox" ng-model="orderCtrl.ordersService.selectedOrder.incomplete"/>
             <div class="track">
               <div class="handle"></div>
             </div>
           </label>
         </div>
 
-        <label class="item item-input item-stacked-label padding-top-0 padding-bottom-0">
-          <span class="input-label bold">Número de sobre </span>
-          <input type="number" ng-model="orderCtrl.ordersService.selectedOrder.envelopeNumber" />
+        <label class="item item-input">
+          <span class="input-label bold width-0">Número de sobre </span>
+          <input type="number" ng-model="orderCtrl.ordersService.selectedOrder.envelopeNumber"/>
         </label>
 
         <div class="padding">
-          <button type="button" class="button button-block button-balanced" ng-click="orderCtrl.submit()" ng-disabled="!orderCtrl.ordersService.selectedOrder.mobile || !orderCtrl.ordersService.selectedOrder.reportsQuantity">Enviar</button>
+          <button type="button" class="button button-block button-balanced" ng-click="orderCtrl.submit()"
+                  ng-disabled="!orderCtrl.ordersService.selectedOrder.mobile || !orderCtrl.ordersService.selectedOrder.reportsQuantity">
+            Enviar
+          </button>
         </div>
 
       </div>

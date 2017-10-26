@@ -62,12 +62,8 @@
               vm.data.password = '';
 
             }
-
-
           }).catch(function (data) {
-
             utilsService.showAlert('Error!', ERRORS.incorrectData);
-
           }).finally(function () {
             $ionicLoading.hide();
           });

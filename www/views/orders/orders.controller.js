@@ -50,7 +50,7 @@
     }
 
     function editOrder(order) {
-      ordersService.editOrder(order);
+        ordersService.editOrder(order);
     }
 
     function initializeDatepickerFrom() {

@@ -40,6 +40,7 @@
     vm.openDatePicker = openDatePicker;
     vm.cantCalculateQuantity = cantCalculateQuantity;
     vm.getReportsQuantity = getReportsQuantity;
+    vm.getDoctors = getDoctors;
     vm.ordersService = ordersService;
     vm.generateNewOrder = generateNewOrder;
     vm.operationalBases = window.localStorage.getObject('operationalBases');
@@ -53,7 +54,13 @@
       }
 
       initializeDatepickers();
-      ordersService.generateNewOrder();
+      if (!ordersService.selectedOrder) {
+        ordersService.generateNewOrder();
+      }
+    }
+
+    function getDoctors() {
+      ordersService.getDoctors();
     }
 
     function submit() {
@@ -120,6 +127,8 @@
         .getReportsQuantity(vm.ordersService.selectedOrder)
         .then(function (response) {
           vm.ordersService.selectedOrder.reportsQuantity = orderService.parseReportsQuantityResult(response);
+          $ionicLoading.hide();
+        }, function(error){
           $ionicLoading.hide();
         });
 
@@ -198,6 +207,10 @@
       if (_from.dayOfYear() > receptionDate.dayOfYear() || to.dayOfYear() > receptionDate.dayOfYear()) {
         utilsService.showAlert('Error!', ERRORS.receptionDateMustBeGreatherThan);
         return false;
+      }
+
+      if (vm.ordersService.selectedOrder.mobile) {
+        ordersService.getDoctors();
       }
 
       return true;

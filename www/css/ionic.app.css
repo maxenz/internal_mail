@@ -9904,12 +9904,6 @@ span.mobile {
 label.item.has-error {
   border-bottom: 2px solid red; }
 
-.button-order-date {
-  padding-top: 2px;
-  padding-bottom: 2px; }
-  .button-order-date > i {
-    padding-top: 0 !important; }
-
 .margin-left-5 {
   margin-left: 5px; }
 
@@ -9925,3 +9919,30 @@ label.item.has-error {
 
 .margin-top-5 {
   margin-top: 5px; }
+
+.item-button-right > .button.date {
+  top: 6px;
+  font-size: 15px; }
+  .item-button-right > .button.date > i {
+    margin-left: 8px; }
+
+.ionic_datepicker_popup .popup-body .selected_date_full,
+.ionic_datepicker_popup .popup-buttons button,
+.ionic_datepicker_popup .selected_date {
+  background-color: #8bc541 !important; }
+
+.ionic_datepicker_popup .popup-body .month_select, .ionic_datepicker_popup .popup-body .year_select {
+  border-bottom: 1px solid #8bc541 !important; }
+
+.ionic_datepicker_popup .popup-body .button-clear,
+.ionic_datepicker_popup .popup-body .month_select:after, .ionic_datepicker_popup .popup-body .year_select:after {
+  color: #8bc541 !important; }
+
+.ionic_datepicker_popup .today {
+  border: 1px solid #8bc541 !important; }
+
+.width-100-percent {
+  width: 100%; }
+
+.width-0 {
+  width: 0; }

@@ -5,7 +5,8 @@
 
       <div class="item padding-2">
         <div class="row">
-          <button class="col button button-small button-stable margin-right-2-percent" ng-click="ordersCtrl.openDatePicker(true)">
+          <button class="col button button-small button-stable margin-right-2-percent"
+                  ng-click="ordersCtrl.openDatePicker(true)">
             <span ng-if="ordersCtrl.data.filters.from">
               {{ ordersCtrl.data.filters.from | amDateFormat: 'DD/MM/YYYY'}}
             </span>
@@ -14,7 +15,8 @@
             </span>
             <i class="icon ion-arrow-down-b"></i>
           </button>
-          <button class="col button button-small button-stable margin-right-2-percent" ng-click="ordersCtrl.openDatePicker(false)">
+          <button class="col button button-small button-stable margin-right-2-percent"
+                  ng-click="ordersCtrl.openDatePicker(false)">
             <span ng-if="ordersCtrl.data.filters.to">
               {{ ordersCtrl.data.filters.to | amDateFormat: 'DD/MM/YYYY' }}
             </span>
@@ -29,7 +31,8 @@
         </div>
       </div>
 
-      <a href="" class="item padding-2" ng-repeat="order in ordersCtrl.ordersService.orders" ng-click="ordersCtrl.editOrder(order)">
+      <a href="" class="item padding-2" ng-repeat="order in ordersCtrl.ordersService.orders"
+         ng-click="ordersCtrl.editOrder(order)">
         <div class="row" style="padding:0">
           <div class="col col-20">
             <span class="mobile margin-top-3">M{{ order.movilId }}</span>
@@ -43,9 +46,11 @@
               Fecha de generación: <span class="bold padding-left-5">{{ order.fecRecepcion | amDateFormat: 'DD/MM/YYYY' }}</span>
             </div>
             <div class="row">
-              Base Operativa: <span class="bold margin-left-5 margin-right-5">{{ order.baseCodigo }}</span> -
-               <span class="margin-right-5 margin-left-5">Sobre <b>{{order.envelopeNumber}}</b></span>
-
+              <span ng-if="order.baseCodigo">Base Operativa:</span> <span class="bold margin-left-5">{{ order.baseCodigo }}</span>
+              <span ng-if="order.envelopeNumber" class="margin-right-5 margin-left-5">- Sobre <b>{{order.envelopeNumber}}</b></span>
+            </div>
+            <div class="row" ng-if="order.personalId">
+              Médico: <span class="bold margin-left-5 margin-right-5">{{ order.personalNombre | limitTo : 25 : 0 }} - {{order.personalId}} </span>
             </div>
           </div>
         </div>
