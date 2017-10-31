@@ -37,6 +37,7 @@
       // Si es 0, es creacion. Si tiene id, es edicion.
       if (!data.id) data.id = 0;
       var doctor = data.doctor ? data.doctor : "";
+      var envelopeNumber = data.envelopeNumber ? data.envelopeNumber : 0;
 
       var url = URLS.orders
         + 'soap_method=SetRecepcion'
@@ -48,7 +49,7 @@
         + '&pHas=' + moment(data.dateTo).format('YYYYMMDD')
         + '&pCnt=' + data.reportsQuantity
         + '&pIcp=' + +data.incomplete
-        + '&pSob=' + data.envelopeNumber
+        + '&pSob=' + envelopeNumber
         + '&pBas=' + data.operationalBase
         + '&pUsr=' + window.localStorage.getItem("user");
 
@@ -88,9 +89,13 @@
     }
 
     function getReportsQuantity(data) {
+
+      var doctor = data.doctor ? data.doctor : "";
+
       var url = URLS.orders
         + 'soap_method=GetCantidad'
         + '&pMov=' + data.mobile
+        + '&pPer=' + doctor
         + '&pDes=' + moment(data.dateFrom).format('YYYYMMDD')
         + '&pHas=' + moment(data.dateTo).format('YYYYMMDD');
 
